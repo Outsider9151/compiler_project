@@ -291,14 +291,20 @@ void print_aA_AssignStmt(aA_assignStmt assignStmt, ostream& os){
 
 void print_aA_VarDeclScalar(aA_varDeclScalar varDeclScalar, ostream& os){
     if(!varDeclScalar) return;
+<<<<<<< HEAD
     tab++;
     print_tab(os, "A_varDeclScalar");
+=======
+>>>>>>> 0d25088 (fix null type support)
     os << *(varDeclScalar->id);
     if(varDeclScalar->type){
         os << ":";
         print_aA_Type(varDeclScalar->type, os);
     }
+<<<<<<< HEAD
     tab--;
+=======
+>>>>>>> 0d25088 (fix null type support)
 }
 
 void print_aA_VarDeclArray(aA_varDeclArray varDeclArray, ostream& os){
@@ -311,7 +317,10 @@ void print_aA_VarDeclArray(aA_varDeclArray varDeclArray, ostream& os){
         os << ":";
         print_aA_Type(varDeclArray->type, os);
     }
+<<<<<<< HEAD
     tab--;
+=======
+>>>>>>> 0d25088 (fix null type support)
 }
 
 void print_aA_VarDecl(aA_varDecl varDecl, ostream& os){
@@ -333,8 +342,11 @@ void print_aA_VarDecl(aA_varDecl varDecl, ostream& os){
 
 void print_aA_VarDefScalar(aA_varDefScalar varDefScalar, ostream& os){
     if(!varDefScalar) return;
+<<<<<<< HEAD
     tab++;
     print_tab(os, "A_varDefScalar");
+=======
+>>>>>>> 0d25088 (fix null type support)
     os << *(varDefScalar->id);
     if(varDefScalar->type){
         os << ":";
@@ -350,7 +362,11 @@ void print_aA_VarDefArray(aA_varDefArray varDefArray, ostream& os){
     tab++;
     print_tab(os, "A_varDefArray");
     os << *(varDefArray->id) << "[";
+<<<<<<< HEAD
     os << varDefArray->len << "]";
+=======
+    os << varDefArray->len << "]:";
+>>>>>>> 0d25088 (fix null type support)
     if(varDefArray->type){
         os << ":";
         print_aA_Type(varDefArray->type, os);
