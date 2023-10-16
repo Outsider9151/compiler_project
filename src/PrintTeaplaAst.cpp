@@ -374,6 +374,7 @@ void print_aA_VarDefArray(aA_varDefArray varDefArray, ostream& os){
     os << *(varDefArray->id) << "[";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     os << varDefArray->len << "]";
 =======
     os << varDefArray->len << "]:";
@@ -384,6 +385,9 @@ void print_aA_VarDefArray(aA_varDefArray varDefArray, ostream& os){
 >>>>>>> 4990744 (fix print_aA_VarDefArray)
 =======
 >>>>>>> 0d25088 (fix null type support)
+=======
+    os << varDefArray->len << "]";
+>>>>>>> 4990744 (fix print_aA_VarDefArray)
     if(varDefArray->type){
         os << ":";
         print_aA_Type(varDefArray->type, os);
