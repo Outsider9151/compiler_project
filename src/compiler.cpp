@@ -42,4 +42,7 @@ int main(int argc, char * argv[]) {
 
     return 0;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> d2491f2 (test)
