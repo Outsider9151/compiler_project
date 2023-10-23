@@ -223,9 +223,7 @@ void print_aA_BoolUnit(aA_boolUnit boolUnit, ostream& os){
     print_tab(os, "A_boolUnit");
     switch(boolUnit->kind){
     case A_comOpExprKind:{
-        os << "(";
         print_aA_ComExpr(boolUnit->u.comExpr, os);
-        os << ")";
         break;
     }
     case A_boolExprKind:{
