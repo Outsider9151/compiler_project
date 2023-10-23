@@ -72,6 +72,7 @@
 #include <stdio.h>
 #include "TeaplAst.h"
 
+<<<<<<< HEAD
 extern A_pos pos;
 extern A_program root;
 
@@ -83,6 +84,14 @@ extern int  yywrap();
 
 
 #line 86 "y.tab.cpp"
+=======
+extern A_program root;
+extern int yylex(void);
+
+void yyerror(const char *s);
+
+#line 81 "y.tab.cpp"
+>>>>>>> 57849de (新尝试，有bug)
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -113,6 +122,7 @@ enum yysymbol_kind_t
   YYSYMBOL_YYEOF = 0,                      /* "end of file"  */
   YYSYMBOL_YYerror = 1,                    /* error  */
   YYSYMBOL_YYUNDEF = 2,                    /* "invalid token"  */
+<<<<<<< HEAD
   YYSYMBOL_ADD = 3,                        /* ADD  */
   YYSYMBOL_SUB = 4,                        /* SUB  */
   YYSYMBOL_MUL = 5,                        /* MUL  */
@@ -192,6 +202,36 @@ enum yysymbol_kind_t
   YYSYMBOL_FnCall = 79,                    /* FnCall  */
   YYSYMBOL_RightValList = 80,              /* RightValList  */
   YYSYMBOL_Type = 81                       /* Type  */
+=======
+  YYSYMBOL_IDENTIFIER = 3,                 /* IDENTIFIER  */
+  YYSYMBOL_NUMBER = 4,                     /* NUMBER  */
+  YYSYMBOL_SEMICOLON = 5,                  /* SEMICOLON  */
+  YYSYMBOL_LET = 6,                        /* LET  */
+  YYSYMBOL_FN = 7,                         /* FN  */
+  YYSYMBOL_STRUCT = 8,                     /* STRUCT  */
+  YYSYMBOL_OPEN_BRACE = 9,                 /* OPEN_BRACE  */
+  YYSYMBOL_CLOSE_BRACE = 10,               /* CLOSE_BRACE  */
+  YYSYMBOL_OPEN_PAREN = 11,                /* OPEN_PAREN  */
+  YYSYMBOL_CLOSE_PAREN = 12,               /* CLOSE_PAREN  */
+  YYSYMBOL_COLON = 13,                     /* COLON  */
+  YYSYMBOL_COMMA = 14,                     /* COMMA  */
+  YYSYMBOL_ADD = 15,                       /* ADD  */
+  YYSYMBOL_SUB = 16,                       /* SUB  */
+  YYSYMBOL_MUL = 17,                       /* MUL  */
+  YYSYMBOL_DIV = 18,                       /* DIV  */
+  YYSYMBOL_YYACCEPT = 19,                  /* $accept  */
+  YYSYMBOL_Program = 20,                   /* Program  */
+  YYSYMBOL_ProgramElement = 21,            /* ProgramElement  */
+  YYSYMBOL_VarDeclStmt = 22,               /* VarDeclStmt  */
+  YYSYMBOL_FnDeclStmt = 23,                /* FnDeclStmt  */
+  YYSYMBOL_FnDef = 24,                     /* FnDef  */
+  YYSYMBOL_VarDecl = 25,                   /* VarDecl  */
+  YYSYMBOL_ExprUnitList = 26,              /* ExprUnitList  */
+  YYSYMBOL_ParamDecl = 27,                 /* ParamDecl  */
+  YYSYMBOL_CodeBlock = 28,                 /* CodeBlock  */
+  YYSYMBOL_ExprUnit = 29,                  /* ExprUnit  */
+  YYSYMBOL_StructDef = 30                  /* StructDef  */
+>>>>>>> 57849de (新尝试，有bug)
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -308,7 +348,11 @@ typedef int yytype_uint16;
 
 
 /* Stored state numbers (used for stacks). */
+<<<<<<< HEAD
 typedef yytype_uint8 yy_state_t;
+=======
+typedef yytype_int8 yy_state_t;
+>>>>>>> 57849de (新尝试，有bug)
 
 /* State numbers in computations.  */
 typedef int yy_state_fast_t;
@@ -517,6 +561,7 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
+<<<<<<< HEAD
 #define YYFINAL  22
 /* YYLAST -- Last index in YYTABLE.  */
 #define YYLAST   172
@@ -532,6 +577,23 @@ union yyalloc
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   295
+=======
+#define YYFINAL  15
+/* YYLAST -- Last index in YYTABLE.  */
+#define YYLAST   50
+
+/* YYNTOKENS -- Number of terminals.  */
+#define YYNTOKENS  19
+/* YYNNTS -- Number of nonterminals.  */
+#define YYNNTS  12
+/* YYNRULES -- Number of rules.  */
+#define YYNRULES  24
+/* YYNSTATES -- Number of states.  */
+#define YYNSTATES  46
+
+/* YYMAXUTOK -- Last valid token kind.  */
+#define YYMAXUTOK   273
+>>>>>>> 57849de (新尝试，有bug)
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -572,13 +634,18 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
+<<<<<<< HEAD
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
       35,    36,    37,    38,    39,    40
+=======
+      15,    16,    17,    18
+>>>>>>> 57849de (新尝试，有bug)
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
+<<<<<<< HEAD
 static const yytype_int16 yyrline[] =
 {
        0,   150,   150,   157,   162,   167,   171,   175,   179,   183,
@@ -590,6 +657,13 @@ static const yytype_int16 yyrline[] =
      437,   441,   447,   453,   457,   463,   467,   473,   479,   483,
      487,   491,   497,   501,   505,   509,   513,   517,   521,   527,
      533,   539,   543,   549,   555,   559,   564,   569,   573
+=======
+static const yytype_uint8 yyrline[] =
+{
+       0,    60,    60,    67,    71,    75,    79,    83,    90,    96,
+     102,   108,   113,   118,   125,   126,   131,   137,   144,   148,
+     155,   160,   183,   188,   195
+>>>>>>> 57849de (新尝试，有bug)
 };
 #endif
 
@@ -605,6 +679,7 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
+<<<<<<< HEAD
   "\"end of file\"", "error", "\"invalid token\"", "ADD", "SUB", "MUL",
   "DIV", "SEMICOLON", "LPAREN", "RPAREN", "AND", "OR", "NOT", "GREATER",
   "LESS", "GREATER_EQ", "LESS_EQ", "EQUAL", "NOT_EQUAL", "ASSIGN",
@@ -619,6 +694,14 @@ static const char *const yytname[] =
   "BoolUnit", "ComExpr", "BoolExpr", "BoolUOpExpr", "BoolBiOpExpr",
   "ArithExpr", "ArithUExpr", "ArithBiOpExpr", "ExprUnit", "MemberExpr",
   "ArrayExpr", "IndexExpr", "FnCall", "RightValList", "Type", YY_NULLPTR
+=======
+  "\"end of file\"", "error", "\"invalid token\"", "IDENTIFIER", "NUMBER",
+  "SEMICOLON", "LET", "FN", "STRUCT", "OPEN_BRACE", "CLOSE_BRACE",
+  "OPEN_PAREN", "CLOSE_PAREN", "COLON", "COMMA", "ADD", "SUB", "MUL",
+  "DIV", "$accept", "Program", "ProgramElement", "VarDeclStmt",
+  "FnDeclStmt", "FnDef", "VarDecl", "ExprUnitList", "ParamDecl",
+  "CodeBlock", "ExprUnit", "StructDef", YY_NULLPTR
+>>>>>>> 57849de (新尝试，有bug)
 };
 
 static const char *
@@ -628,7 +711,11 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
+<<<<<<< HEAD
 #define YYPACT_NINF (-137)
+=======
+#define YYPACT_NINF (-20)
+>>>>>>> 57849de (新尝试，有bug)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -640,6 +727,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
+<<<<<<< HEAD
 static const yytype_int16 yypact[] =
 {
        1,  -137,   -29,   -12,     9,    64,  -137,     1,  -137,  -137,
@@ -660,6 +748,15 @@ static const yytype_int16 yypact[] =
     -137,   135,   134,  -137,    60,    60,  -137,   132,    -6,   130,
      133,     5,  -137,   136,  -137,   137,   139,  -137,    60,   141,
     -137
+=======
+static const yytype_int8 yypact[] =
+{
+      10,   -20,     2,    17,    21,    13,   -20,   -20,   -20,   -20,
+     -20,    -2,    20,    15,    18,   -20,    24,    26,   -20,     2,
+      25,    22,   -20,   -20,     7,    23,    27,     3,     2,    29,
+      19,   -20,    -4,   -20,   -20,   -20,   -20,   -20,     0,   -20,
+     -20,    28,   -20,    19,   -20,   -20
+>>>>>>> 57849de (新尝试，有bug)
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -667,6 +764,7 @@ static const yytype_int16 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
+<<<<<<< HEAD
        4,     9,     0,     0,     0,     0,     2,     4,     7,     8,
        0,     6,     5,     0,     0,    38,    37,     0,    42,    41,
        0,     0,     1,     3,    10,     0,     0,     0,    36,    35,
@@ -695,21 +793,41 @@ static const yytype_int16 yypgoto[] =
      159,  -137,  -137,  -137,  -137,   -26,   -50,  -137,   -38,  -137,
     -137,   -56,  -137,  -137,   -34,   -25,   -23,  -137,   -21,  -136,
      -90
+=======
+       0,     7,     0,     0,     0,     0,     2,     3,     4,     5,
+       6,     0,     0,     0,     0,     1,     0,     0,     8,     0,
+       0,     0,    11,    18,     0,     0,    12,     0,     0,     0,
+      14,     9,     0,    10,    19,    24,    22,    23,     0,    15,
+      20,     0,    13,     0,    21,    16
+};
+
+/* YYPGOTO[NTERM-NUM].  */
+static const yytype_int8 yypgoto[] =
+{
+     -20,   -20,     5,    30,   -20,   -20,   -19,   -20,   -20,   -20,
+     -13,   -20
+>>>>>>> 57849de (新尝试，有bug)
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
+<<<<<<< HEAD
        0,     5,     6,     7,     8,    39,    40,    41,    42,    43,
        9,    44,    58,    10,    11,    56,    45,    14,    15,    16,
       57,    18,    19,    46,    47,   117,    66,    67,    68,    69,
       70,    71,    72,    73,    74,    75,    76,   121,    77,   118,
       53
+=======
+       0,     5,     6,     7,     8,     9,    12,    38,    24,    33,
+      39,    10
+>>>>>>> 57849de (新尝试，有bug)
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
    positive, shift that token.  If negative, reduce the rule whose
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
+<<<<<<< HEAD
 static const yytype_uint8 yytable[] =
 {
       48,   126,    49,    59,    50,    99,    85,    65,     1,    60,
@@ -752,12 +870,33 @@ static const yytype_int16 yycheck[] =
       25,     7,    26,    25,    19,    26,    22,    27,    26,     7,
       27,     2,    -1,    -1,    27,    26,    -1,    -1,    27,    -1,
       -1,    -1,    36
+=======
+static const yytype_int8 yytable[] =
+{
+      23,     1,     2,     3,     4,    11,    40,    16,    31,    34,
+      42,    17,    32,    15,    43,     1,     2,     3,     4,    27,
+      13,    28,    36,    37,    14,    18,    19,    20,    21,    22,
+      45,     2,    26,    29,    35,     0,    30,    41,    44,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+      25
+};
+
+static const yytype_int8 yycheck[] =
+{
+      19,     5,     6,     7,     8,     3,    10,     9,     5,    28,
+      10,    13,     9,     0,    14,     5,     6,     7,     8,    12,
+       3,    14,     3,     4,     3,     5,    11,     9,     4,     3,
+      43,     6,    10,    10,     5,    -1,     9,    32,    10,    -1,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      20
+>>>>>>> 57849de (新尝试，有bug)
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
+<<<<<<< HEAD
        0,     7,    21,    28,    29,    42,    43,    44,    45,    51,
       54,    55,    57,    39,    58,    59,    60,    61,    62,    63,
       39,    39,     0,    43,     7,    26,    22,    24,     7,     7,
@@ -776,11 +915,19 @@ static const yytype_int8 yystos[] =
        7,    81,    25,    81,    26,    26,    80,    19,    22,    52,
       52,    26,    81,    27,    27,    80,    36,    27,    26,    52,
       27
+=======
+       0,     5,     6,     7,     8,    20,    21,    22,    23,    24,
+      30,     3,    25,     3,     3,     0,     9,    13,     5,    11,
+       9,     4,     3,    25,    27,    22,    10,    12,    14,    10,
+       9,     5,     9,    28,    25,     5,     3,     4,    26,    29,
+      10,    21,    10,    14,    10,    29
+>>>>>>> 57849de (新尝试，有bug)
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
+<<<<<<< HEAD
        0,    41,    42,    43,    43,    44,    44,    44,    44,    44,
       45,    46,    46,    46,    46,    46,    46,    46,    46,    46,
       47,    48,    49,    50,    50,    51,    52,    52,    53,    54,
@@ -790,11 +937,17 @@ static const yytype_int8 yyr1[] =
       69,    69,    70,    71,    71,    72,    72,    73,    74,    74,
       74,    74,    75,    75,    75,    75,    75,    75,    75,    76,
       77,    78,    78,    79,    80,    80,    80,    81,    81
+=======
+       0,    19,    20,    21,    21,    21,    21,    21,    22,    23,
+      24,    25,    25,    25,    26,    26,    26,    26,    27,    27,
+      28,    28,    29,    29,    30
+>>>>>>> 57849de (新尝试，有bug)
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
+<<<<<<< HEAD
        0,     2,     1,     2,     0,     1,     1,     1,     1,     1,
        2,     1,     1,     1,     1,     1,     1,     2,     2,     1,
        3,     2,     7,     7,    11,     4,     2,     1,     1,     5,
@@ -804,6 +957,11 @@ static const yytype_int8 yyr2[] =
        1,     1,     2,     3,     3,     1,     1,     2,     3,     3,
        3,     3,     1,     1,     3,     1,     1,     1,     1,     3,
        4,     1,     1,     4,     3,     1,     0,     1,     1
+=======
+       0,     2,     1,     1,     1,     1,     1,     1,     3,     6,
+       6,     3,     4,     7,     0,     1,     3,     0,     1,     3,
+       2,     3,     1,     1,     6
+>>>>>>> 57849de (新尝试，有bug)
 };
 
 
@@ -1266,15 +1424,177 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
+<<<<<<< HEAD
   case 2: /* Program: ProgramElementList  */
 #line 151 "parser.yacc"
 {  
   root = A_Program((yyvsp[0].programElementList));
   (yyval.program) = A_Program((yyvsp[0].programElementList));
+=======
+  case 2: /* Program: ProgramElement  */
+#line 61 "parser.yacc"
+{
+  root = A_Program((yyvsp[0].programElement)->pos, (yyvsp[0].programElement));
+  (yyval.program) = root;
+}
+#line 1123 "y.tab.cpp"
+    break;
+
+  case 3: /* ProgramElement: VarDeclStmt  */
+#line 68 "parser.yacc"
+{
+  (yyval.programElement) = A_ProgramVarDeclStmt((yyvsp[0].varDeclStmt)->pos, (yyvsp[0].varDeclStmt));
+}
+#line 1131 "y.tab.cpp"
+    break;
+
+  case 4: /* ProgramElement: FnDeclStmt  */
+#line 72 "parser.yacc"
+{
+  (yyval.programElement) = A_ProgramFnDeclStmt((yyvsp[0].fnDeclStmt)->pos, (yyvsp[0].fnDeclStmt));
+}
+#line 1139 "y.tab.cpp"
+    break;
+
+  case 5: /* ProgramElement: FnDef  */
+#line 76 "parser.yacc"
+{
+  (yyval.programElement) = A_ProgramFnDef((yyvsp[0].fnDef)->pos, (yyvsp[0].fnDef));
+}
+#line 1147 "y.tab.cpp"
+    break;
+
+  case 6: /* ProgramElement: StructDef  */
+#line 80 "parser.yacc"
+{
+  (yyval.programElement) = A_ProgramStructDef((yyvsp[0].structDef)->pos, (yyvsp[0].structDef));
+}
+#line 1155 "y.tab.cpp"
+    break;
+
+  case 7: /* ProgramElement: SEMICOLON  */
+#line 84 "parser.yacc"
+{
+  // Handle empty statement
+  (yyval.programElement) = A_ProgramNullStmt((yyvsp[0].pos)->pos);
+}
+#line 1164 "y.tab.cpp"
+    break;
+
+  case 8: /* VarDeclStmt: LET VarDecl SEMICOLON  */
+#line 91 "parser.yacc"
+{
+  (yyval.varDeclStmt) = A_VarDeclStmt((yyvsp[-1].varDecl)->pos, (yyvsp[-1].varDecl));
+}
+#line 1172 "y.tab.cpp"
+    break;
+
+  case 9: /* FnDeclStmt: FN IDENTIFIER OPEN_PAREN ParamDecl CLOSE_PAREN SEMICOLON  */
+#line 97 "parser.yacc"
+{
+  (yyval.fnDeclStmt) = A_FnDeclStmt((yyvsp[-4].pos)->pos, (yyvsp[-4].pos), (yyvsp[-2].paramDecl));
+}
+#line 1180 "y.tab.cpp"
+    break;
+
+  case 10: /* FnDef: FN IDENTIFIER OPEN_PAREN ParamDecl CLOSE_PAREN CodeBlock  */
+#line 103 "parser.yacc"
+{
+  (yyval.fnDef) = A_FnDef((yyvsp[-4].pos)->pos, (yyvsp[-4].pos), (yyvsp[-2].paramDecl), (yyvsp[0].codeBlock));
+}
+#line 1188 "y.tab.cpp"
+    break;
+
+  case 11: /* VarDecl: IDENTIFIER COLON IDENTIFIER  */
+#line 109 "parser.yacc"
+{
+  // 处理 VarDecl 产生式的操作
+  (yyval.varDecl) = A_VarDecl((yyvsp[-2].pos)->pos, (yyvsp[-2].pos)->name, (yyvsp[0].pos)); // 修改以适应您的数据结构
+}
+#line 1197 "y.tab.cpp"
+    break;
+
+  case 12: /* VarDecl: IDENTIFIER OPEN_BRACE NUMBER CLOSE_BRACE  */
+#line 114 "parser.yacc"
+{
+  // 处理带有数组长度的 VarDecl 产生式的操作
+  (yyval.varDecl) = A_VarDecl((yyvsp[-3].pos)->pos, (yyvsp[-3].pos)->name, (yyvsp[-1].pos), NULL); // 修改以适应您的数据结构
+}
+#line 1206 "y.tab.cpp"
+    break;
+
+  case 13: /* VarDecl: IDENTIFIER OPEN_BRACE NUMBER CLOSE_BRACE OPEN_BRACE ExprUnitList CLOSE_BRACE  */
+#line 119 "parser.yacc"
+{
+  // 处理带有数组长度和初始值的 VarDecl 产生式的操作
+  (yyval.varDecl) = A_VarDecl((yyvsp[-6].pos)->pos, (yyvsp[-6].pos)->name, (yyvsp[-4].pos), (yyvsp[0].pos)); // 修改以适应您的数据结构
+}
+#line 1215 "y.tab.cpp"
+    break;
+
+  case 15: /* ExprUnitList: ExprUnit  */
+#line 127 "parser.yacc"
+  {
+    A_exprUnitList list = A_ExprUnitList((yyvsp[0].exprUnit));
+    (yyval.exprUnitList) = list;
+  }
+#line 1224 "y.tab.cpp"
+    break;
+
+  case 16: /* ExprUnitList: ExprUnitList COMMA ExprUnit  */
+#line 132 "parser.yacc"
+  {
+    A_exprUnitList list = A_ExprUnitListAppend((yyvsp[-2].exprUnitList), (yyvsp[0].exprUnit));
+    (yyval.exprUnitList) = list;
+  }
+#line 1233 "y.tab.cpp"
+    break;
+
+  case 17: /* ExprUnitList: %empty  */
+#line 137 "parser.yacc"
+  {
+    A_exprUnitList list = NULL; // 或者使用您的数据结构中的空列表
+    (yyval.exprUnitList) = list;
+  }
+#line 1242 "y.tab.cpp"
+    break;
+
+  case 18: /* ParamDecl: VarDecl  */
+#line 145 "parser.yacc"
+{
+  (yyval.paramDecl) = A_ParamDecl((yyvsp[0].varDecl)->pos, A_VarDeclScalar((yyvsp[0].varDecl)->pos, (yyvsp[0].varDecl)->name, (yyvsp[0].varDecl)->u.structType));
+}
+#line 1250 "y.tab.cpp"
+    break;
+
+  case 19: /* ParamDecl: ParamDecl COMMA VarDecl  */
+#line 149 "parser.yacc"
+{
+  // Handle multiple parameters separated by COMMA here
+  (yyval.paramDecl) = A_ParamDeclList((yyvsp[-2].paramDecl)->pos, (yyvsp[-2].paramDecl), (yyvsp[0].varDecl));
+}
+#line 1259 "y.tab.cpp"
+    break;
+
+  case 20: /* CodeBlock: OPEN_BRACE CLOSE_BRACE  */
+#line 156 "parser.yacc"
+{
+  // Handle empty code block
+  (yyval.codeBlock) = A_CodeBlock((yyvsp[-1].pos)->pos, NULL);
+}
+#line 1268 "y.tab.cpp"
+    break;
+
+  case 21: /* CodeBlock: OPEN_BRACE ProgramElement CLOSE_BRACE  */
+#line 161 "parser.yacc"
+{
+  (yyval.codeBlock) = A_CodeBlock((yyvsp[-2].pos)->pos, (yyvsp[-1].programElement));
+>>>>>>> 57849de (新尝试，有bug)
 }
 #line 1276 "y.tab.cpp"
     break;
 
+<<<<<<< HEAD
   case 3: /* ProgramElementList: ProgramElement ProgramElementList  */
 #line 158 "parser.yacc"
 {
@@ -1965,6 +2285,37 @@ yyreduce:
 
 
 #line 1968 "y.tab.cpp"
+=======
+  case 22: /* ExprUnit: IDENTIFIER  */
+#line 184 "parser.yacc"
+{
+  // Handle identifier expression unit
+  (yyval.exprUnit) = A_IdentExpr((yyvsp[0].pos)->pos, (yyvsp[0].pos)->name);
+}
+#line 1285 "y.tab.cpp"
+    break;
+
+  case 23: /* ExprUnit: NUMBER  */
+#line 189 "parser.yacc"
+{
+  // Handle numeric expression unit
+  (yyval.exprUnit) = A_ArithNumExpr((yyvsp[0].pos)->pos, (yyvsp[0].pos)->val);
+}
+#line 1294 "y.tab.cpp"
+    break;
+
+  case 24: /* StructDef: STRUCT IDENTIFIER OPEN_BRACE VarDeclStmt CLOSE_BRACE SEMICOLON  */
+#line 196 "parser.yacc"
+{
+  // Handle struct definition
+  (yyval.structDef) = A_StructDef((yyvsp[-4].pos)->pos, (yyvsp[-4].pos), (yyvsp[-2].varDeclStmt));
+}
+#line 1303 "y.tab.cpp"
+    break;
+
+
+#line 1307 "y.tab.cpp"
+>>>>>>> 57849de (新尝试，有bug)
 
       default: break;
     }
@@ -2157,6 +2508,7 @@ yyreturnlab:
   return yyresult;
 }
 
+<<<<<<< HEAD
 #line 581 "parser.yacc"
 
 
@@ -2169,4 +2521,19 @@ int yywrap()
 {
   return(1);
 }
+=======
+#line 202 "parser.yacc"
+
+
+void yyerror(const char *s)
+{
+  fprintf(stderr, "Syntax error: %s\n", s);
+}
+
+int main()
+{
+  yyparse();
+  // Now you can use the 'root' variable to access the generated AST.
+  return 0;
+>>>>>>> 57849de (新尝试，有bug)
 }

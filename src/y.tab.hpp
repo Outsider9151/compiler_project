@@ -54,6 +54,7 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
+<<<<<<< HEAD
     ADD = 258,                     /* ADD  */
     SUB = 259,                     /* SUB  */
     MUL = 260,                     /* MUL  */
@@ -92,6 +93,24 @@ extern int yydebug;
     INT = 293,                     /* INT  */
     ID = 294,                      /* ID  */
     NUM = 295                      /* NUM  */
+=======
+    IDENTIFIER = 258,              /* IDENTIFIER  */
+    NUMBER = 259,                  /* NUMBER  */
+    SEMICOLON = 260,               /* SEMICOLON  */
+    LET = 261,                     /* LET  */
+    FN = 262,                      /* FN  */
+    STRUCT = 263,                  /* STRUCT  */
+    OPEN_BRACE = 264,              /* OPEN_BRACE  */
+    CLOSE_BRACE = 265,             /* CLOSE_BRACE  */
+    OPEN_PAREN = 266,              /* OPEN_PAREN  */
+    CLOSE_PAREN = 267,             /* CLOSE_PAREN  */
+    COLON = 268,                   /* COLON  */
+    COMMA = 269,                   /* COMMA  */
+    ADD = 270,                     /* ADD  */
+    SUB = 271,                     /* SUB  */
+    MUL = 272,                     /* MUL  */
+    DIV = 273                      /* DIV  */
+>>>>>>> 57849de (新尝试，有bug)
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -100,6 +119,7 @@ extern int yydebug;
 #define YYEOF 0
 #define YYerror 256
 #define YYUNDEF 257
+<<<<<<< HEAD
 #define ADD 258
 #define SUB 259
 #define MUL 260
@@ -138,11 +158,30 @@ extern int yydebug;
 #define INT 293
 #define ID 294
 #define NUM 295
+=======
+#define IDENTIFIER 258
+#define NUMBER 259
+#define SEMICOLON 260
+#define LET 261
+#define FN 262
+#define STRUCT 263
+#define OPEN_BRACE 264
+#define CLOSE_BRACE 265
+#define OPEN_PAREN 266
+#define CLOSE_PAREN 267
+#define COLON 268
+#define COMMA 269
+#define ADD 270
+#define SUB 271
+#define MUL 272
+#define DIV 273
+>>>>>>> 57849de (新尝试，有bug)
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
+<<<<<<< HEAD
 #line 19 "parser.yacc"
 
   A_pos pos;
@@ -190,6 +229,23 @@ union YYSTYPE
   A_program program;
 
 #line 193 "y.tab.hpp"
+=======
+#line 11 "parser.yacc"
+
+  A_pos pos;
+  A_program program;
+  A_programElementList programElementList;
+  A_programElement programElement;
+  A_arithExpr arithExpr;
+  A_exprUnit exprUnit;
+  A_structDef structDef;
+  A_varDeclStmt varDeclStmt;
+  A_fnDeclStmt fnDeclStmt;
+  A_fnDef fnDef;
+  A_exprUnitList exprUnitList;
+
+#line 117 "y.tab.hpp"
+>>>>>>> 57849de (新尝试，有bug)
 
 };
 typedef union YYSTYPE YYSTYPE;
