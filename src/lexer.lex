@@ -12,49 +12,54 @@ extern int line, col;
 %option noyywrap
 
 %%
+[ \t]  ;  /* 跳过空白字符 */
+\n     { line++; col = 1; }  /* 更新行号并重置字符位置 */
+.      { col += yyleng; }  /* 更新字符位置 */
 
-[ \t]+      ; // 忽略空格和制表符
-"//"[^(\n)]*  ; // 单行注释
-"/*"([^*]|" *"[^/])*"*/" ; // 多行注释
-"int"       { return INT; }
-"let"       { return LET; }
-"fn"        { return FN; }
-"return"    { return RETURN; }
-"if"        { return IF; }
-"else"      { return ELSE; }
-"while"     { return WHILE; }
-"+"         { return PLUS; }
-"-"         { return MINUS; }
-"*"         { return MULTIPLY; }
-"/"         { return DIVIDE; }
-"=="        { return EQUAL; }
-"!="        { return NOT_EQUAL; }
-"<"         { return LESS_THAN; }
-"<="        { return LESS_THAN_OR_EQUAL; }
-">"         { return GREATER_THAN; }
-">="        { return GREATER_THAN_OR_EQUAL; }
-"&&"        { return LOGICAL_AND; }
-"||"        { return LOGICAL_OR; }
-"!"         { return LOGICAL_NOT; }
-[a-zA-Z][a-zA-Z0-9]* { yylval.strval = strdup(yytext); return ID; }
-":" { return COLON; }
-"[" { return LBRACK; }
-"]" { return RBRACK; }
-[0-9]+ { yylval.numval = atoi(yytext); return NUMBER; }
-"{"         { return OPEN_BRACE; }
-"}"         { return CLOSE_BRACE; }
-"("         { return OPEN_PAREN; }
-")"         { return CLOSE_PAREN; }
-"["         { return OPEN_BRACKET; }
-"]"         { return CLOSE_BRACKET; }
-";"         { return SEMICOLON; }
-"="         { return ASSIGN; }
-","         { return COMMA; }
+"let"      { yylval.str_val = strdup(yytext); return LET; }
+"struct"   { yylval.str_val = strdup(yytext); return STRUCT_TYPE; }
+"fn"       { yylval.str_val = strdup(yytext); return FN; }
+"if"       { yylval.str_val = strdup(yytext); return IF; }
+"else"     { yylval.str_val = strdup(yytext); return ELSE; }
+"while"    { yylval.str_val = strdup(yytext); return WHILE; }
+"return"   { yylval.str_val = strdup(yytext); return RET; }
+"continue" { yylval.str_val = strdup(yytext); return CONTINUE; }
+"break"    { yylval.str_val = strdup(yytext); return BREAK; }
+"int"      { yylval.str_val = strdup(yytext); return NATIVE_TYPE; }
 
-IDENTIFIER { $$ = A_TokenId(A_Pos(@1, @2), strdup(yytext)); }
-NUMBER { $$ = A_TokenNum(A_Pos(@1, @2), atoi(yytext)); }
+[0-9]+      { yylval.num = atoi(yytext); return NUM; }
+[a-zA-Z][a-zA-Z0-9]*  { yylval.str = strdup(yytext); return ID; }
+
+"+"      { yylval.str_val = strdup(yytext); return PLUS; }
+"-"      { yylval.str_val = strdup(yytext); return MINUS; }
+"*"      { yylval.str_val = strdup(yytext); return MULT; }
+"/"      { yylval.str_val = strdup(yytext); return DIV; }
+">"      { yylval.str_val = strdup(yytext); return GREATER; }
+"<"      { yylval.str_val = strdup(yytext); return LESS; }
+">="     { yylval.str_val = strdup(yytext); return GREATER_EQ; }
+"<="     { yylval.str_val = strdup(yytext); return LESS_EQ; }
+"=="     { yylval.str_val = strdup(yytext); return EQUAL; }
+"!="     { yylval.str_val = strdup(yytext); return NOT_EQUAL; }
+"&&"     { yylval.str_val = strdup(yytext); return AND; }
+"||"     { yylval.str_val = strdup(yytext); return OR; }
+"!"      { yylval.str_val = strdup(yytext); return NOT; }
+"="      { yylval.str_val = strdup(yytext); return ASSIGN; }
+";"      { yylval.str_val = strdup(yytext); return SEMICOLON; }
+"("      { yylval.str_val = strdup(yytext); return LPAREN; }
+")"      { yylval.str_val = strdup(yytext); return RPAREN; }
+"{"      { yylval.str_val = strdup(yytext); return LBRACE; }
+"}"      { yylval.str_val = strdup(yytext); return RBRACE; }
+"["      { yylval.str_val = strdup(yytext); return LBRACKET; }
+"]"      { yylval.str_val = strdup(yytext); return RBRACKET; }
+","      { yylval.str_val = strdup(yytext); return COMMA; }
+"."      { yylval.str_val = strdup(yytext); return DOT; }
 
 
+"//"([^/\n]|\/[^/n]|\/\n[^/])*\n  ; /* 单行注释 */
+
+"/*"([^*]|*[^/])*"*/"  ; /* 多行注释 */
+
+.        { fprintf(stderr, "词法错误: 未知字符: %s 在 %d 行 %d 列\n", yytext, line, col); }
 
 %%
 
