@@ -15,6 +15,7 @@ extern int  yywrap();
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 %union {
   A_pos pos;
@@ -147,19 +148,54 @@ extern int  yywrap();
 =======
 // TODO:
 // your parser
+=======
+>>>>>>> 2e069b1 (一些捉虫)
 
 >>>>>>> d01065b (架构已经差不多了，现在根据给出的Ast节点结构细调)
 %union {
   A_pos pos;
-  A_program program;
-  A_programElementList programElementList;
-  A_programElement programElement;
-  A_arithExpr arithExpr;
+  A_tokenId tokenId;
+  A_tokenNum tokenNum;
+  A_type type;
+  A_rightValList rightValList;
+  A_fnCall fnCall;
+  A_indexExpr indexExpr;
+  A_arrayExpr arrayExpr;
+  A_memberExpr memberExpr;
   A_exprUnit exprUnit;
-  A_structDef structDef;
+  A_arithBiOpExpr arithBiOpExpr;
+  A_arithUExpr arithUExpr;
+  A_arithExpr arithExpr;
+  A_boolBiOpExpr boolBiOpExpr;
+  A_boolUOpExpr boolUOpExpr;
+  A_boolExpr boolExpr;
+  A_comExpr comExpr;
+  A_boolUnit boolUnit;
+  A_rightVal rightVal;
+  A_leftVal leftVal;
+  A_assignStmt assignStmt;
+  A_varDeclScalar varDeclScalar;
+  A_varDeclArray varDeclArray;
+  A_varDecl varDecl;
+  A_varDefScalar varDefScalar;
+  A_varDefArray varDefArray;
+  A_varDef varDef;
   A_varDeclStmt varDeclStmt;
-  A_fnDeclStmt fnDeclStmt;
+  A_varDeclList varDeclList;
+  A_structDef structDef;
+  A_fnDecl fnDecl;
+  A_paramDecl paramDecl;
+  A_codeBlockStmtList codeBlockStmtList;
   A_fnDef fnDef;
+  A_ifStmt ifStmt;
+  A_whileStmt whileStmt;
+  A_callStmt callStmt;
+  A_returnStmt returnStmt;
+  A_codeBlockStmt codeBlockStmt;
+  A_fnDeclStmt fnDeclStmt;
+  A_programElement programElement;
+  A_programElementList programElementList;
+  A_program program;
 }
 
 %token <pos> ADD
@@ -305,11 +341,11 @@ ArithExpr: ArithExpr ADD ArithExpr
 
 ExprUnit: NUM
 {
-  $$ = A_NumExpr($1->pos, atoi($1->str_val));
+  $$ = A_NumExprUnit($1->pos, $1->num);
 }
 | ID
 {
-  $$ = A_IdExpr($1->pos, $1->str_val);
+  $$ = A_IdExprUnit($1->pos, $1->id);
 }
 | LPAREN ArithExpr RPAREN
 {
@@ -522,7 +558,7 @@ RightValList: RightVal COMMA RightValList
 
 StructDef: STRUCT ID LBRACE VarDeclList RBRACE
 {
-  $$ = A_Struct_Def($2->pos, $2, $4);
+  $$ = A_StructDef($2->pos, $2, $4);
 }
 ;
 
