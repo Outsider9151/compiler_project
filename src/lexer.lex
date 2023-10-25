@@ -14,6 +14,7 @@ extern int line, col;
 
 %%
 
+<<<<<<< HEAD
 <COMMENT_SHORT>{
 [\n\r] {  BEGIN INITIAL; line=line+1; col=0; }
 . {  /* 单行注释 */ }
@@ -149,6 +150,8 @@ extern int line, col;
 
 
 
+=======
+>>>>>>> 195a6e8 (11)
 <COMMENT_SHORT>{
 [\n\r] {  BEGIN INITIAL; line=line+1; col=0; }
 . {  /* ignore comment */ }
@@ -165,8 +168,6 @@ extern int line, col;
 [\n\r] { line=line+1; col=0;  }
 . { /* ignore comment */ }
 }
-
-
 
 <INITIAL>{
 "//"  { BEGIN COMMENT_SHORT; }
