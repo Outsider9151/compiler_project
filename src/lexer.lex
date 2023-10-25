@@ -12,10 +12,6 @@ extern int line, col;
 
 %%
 
-
-
-
-
 <COMMENT_SHORT>{
 [\n\r] {  BEGIN INITIAL; line=line+1; col=0; }
 . {  /* ignore comment */ }
@@ -26,8 +22,6 @@ extern int line, col;
 [\n\r] { line=line+1; col=0;  }
 . { /* ignore comment */ }
 }
-
-
 
 <INITIAL>{
 "//"  { BEGIN COMMENT_SHORT; }
