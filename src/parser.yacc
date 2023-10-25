@@ -22,6 +22,7 @@ extern int  yywrap();
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 // TODO:
 // your parser
@@ -32,6 +33,8 @@ extern int  yywrap();
 // TODO:
 // your parser
 >>>>>>> 703b848 (okk)
+=======
+>>>>>>> 67cd423 (格式修改)
 
 %union {
   A_pos pos;
