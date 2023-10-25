@@ -5,8 +5,6 @@
 #include "y.tab.hpp"
 extern int line, col;
 %}
-/*TODO:*/ 
-/*your lexer*/
 
 <<<<<<< HEAD
 <<<<<<< HEAD
