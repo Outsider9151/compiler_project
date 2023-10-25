@@ -5,64 +5,86 @@
 #include "y.tab.hpp"
 extern int line, col;
 %}
+/*TODO:*/ 
+/*your lexer*/
 
-// TODO:
-// your lexer
-
-%option noyywrap
-
-%%
-[ \t]  ;  /* 跳过空白字符 */
-\n     { line++; col = 1; }  /* 更新行号并重置字符位置 */
-.      { col += yyleng; }  /* 更新字符位置 */
-
-"let"      { yylval.str_val = strdup(yytext); return LET; }
-"struct"   { yylval.str_val = strdup(yytext); return STRUCT_TYPE; }
-"fn"       { yylval.str_val = strdup(yytext); return FN; }
-"if"       { yylval.str_val = strdup(yytext); return IF; }
-"else"     { yylval.str_val = strdup(yytext); return ELSE; }
-"while"    { yylval.str_val = strdup(yytext); return WHILE; }
-"return"   { yylval.str_val = strdup(yytext); return RET; }
-"continue" { yylval.str_val = strdup(yytext); return CONTINUE; }
-"break"    { yylval.str_val = strdup(yytext); return BREAK; }
-"int"      { yylval.str_val = strdup(yytext); return NATIVE_TYPE; }
-
-[0-9]+      { yylval.num = atoi(yytext); return NUM; }
-[a-zA-Z][a-zA-Z0-9]*  { yylval.str = strdup(yytext); return ID; }
-
-"+"      { yylval.str_val = strdup(yytext); return PLUS; }
-"-"      { yylval.str_val = strdup(yytext); return MINUS; }
-"*"      { yylval.str_val = strdup(yytext); return MULT; }
-"/"      { yylval.str_val = strdup(yytext); return DIV; }
-">"      { yylval.str_val = strdup(yytext); return GREATER; }
-"<"      { yylval.str_val = strdup(yytext); return LESS; }
-">="     { yylval.str_val = strdup(yytext); return GREATER_EQ; }
-"<="     { yylval.str_val = strdup(yytext); return LESS_EQ; }
-"=="     { yylval.str_val = strdup(yytext); return EQUAL; }
-"!="     { yylval.str_val = strdup(yytext); return NOT_EQUAL; }
-"&&"     { yylval.str_val = strdup(yytext); return AND; }
-"||"     { yylval.str_val = strdup(yytext); return OR; }
-"!"      { yylval.str_val = strdup(yytext); return NOT; }
-"="      { yylval.str_val = strdup(yytext); return ASSIGN; }
-";"      { yylval.str_val = strdup(yytext); return SEMICOLON; }
-"("      { yylval.str_val = strdup(yytext); return LPAREN; }
-")"      { yylval.str_val = strdup(yytext); return RPAREN; }
-"{"      { yylval.str_val = strdup(yytext); return LBRACE; }
-"}"      { yylval.str_val = strdup(yytext); return RBRACE; }
-"["      { yylval.str_val = strdup(yytext); return LBRACKET; }
-"]"      { yylval.str_val = strdup(yytext); return RBRACKET; }
-","      { yylval.str_val = strdup(yytext); return COMMA; }
-"."      { yylval.str_val = strdup(yytext); return DOT; }
-
-
-"//"([^/\n]|\/[^/n]|\/\n[^/])*\n  ; /* 单行注释 */
-
-"/*"([^*]|*[^/])*"*/"  ; /* 多行注释 */
-
-.        { fprintf(stderr, "词法错误: 未知字符: %s 在 %d 行 %d 列\n", yytext, line, col); }
+%start COMMENT_SHORT COMMENT_LONG
 
 %%
 
-int yywrap() {
-    return 1;
+
+
+
+
+<COMMENT_SHORT>{
+[\n\r] {  BEGIN INITIAL; line=line+1; col=0; }
+. {  /* ignore comment */ }
 }
+
+<COMMENT_LONG>{
+"*/" {  BEGIN INITIAL;  }
+[\n\r] { line=line+1; col=0;  }
+. { /* ignore comment */ }
+}
+
+
+
+<INITIAL>{
+"//"  { BEGIN COMMENT_SHORT; }
+"/*" { BEGIN COMMENT_LONG; }
+[\n\r] { line=line+1; col=0; }
+"->"    { yylval.pos = A_Pos(line, col); col+=strlen(yytext); return ARROW; }
+"+"	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return ADD; }
+"-"	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return SUB; }
+"*"	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return MUL; }
+"/"	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return DIV; }
+
+";"	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return SEMICOLON; }
+","	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return COMMA; }
+"struct"	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return STRUCT; }
+"if"	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return IF; }
+"else"	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return ELSE; }
+"let"	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return LET; }
+">="	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return LESS_EQ; }
+">"	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return GREATER; }
+"<="	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return GREATER_EQ; }
+"<"	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return LESS; }
+"=="	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return EQUAL; }
+"!="	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return NOT_EQUAL; }
+"="	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return ASSIGN; }
+"("	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return LPAREN; }
+")"	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return RPAREN; }
+"["	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return LBRACKET; }
+"]"	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return RBRACKET; }
+"{"	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return LBRACE; }
+"}"	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return RBRACE; }
+"."	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return DOT; }
+":"	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return COLON; }
+"int"	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return INT; }
+"&&"	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return AND; }
+"||"	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return OR; }
+"!"	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return NOT; }
+
+
+"fn"	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return FN; }
+
+"ret"	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return RET; }
+"continue"	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return CONTINUE; }
+"break"	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return BREAK; }
+"while"	{ yylval.pos = A_Pos(line, col); col+=strlen(yytext); return WHILE; }
+[a-zA-Z]+([a-zA-Z0-9]*) 	{ 
+    int len = strlen(yytext);
+    char* new_text = (char*)malloc((len+1)*sizeof(char));
+    strcpy(new_text, yytext);
+    new_text[len]='\0';
+    yylval.tokenId = A_TokenId(A_Pos(line, col), new_text); col+=strlen(yytext); return ID; 
+}
+([1-9]+[0-9]*)|[0]	{ yylval.tokenNum = A_TokenNum(A_Pos(line, col),atoi(yytext)); col+=strlen(yytext); return NUM; }
+
+" "   { col+=1; }
+"\t" { col+=4; }
+
+.	{ printf("Unknown character:%s!! line=%d,col=%d\n",yytext,line,col); }
+}
+
+%%
