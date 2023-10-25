@@ -13,8 +13,6 @@ extern int  yywrap();
 
 %}
 
-// TODO:
-// your parser
 
 %union {
   A_pos pos;
