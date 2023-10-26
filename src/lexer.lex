@@ -152,7 +152,7 @@ extern int line, col;
 >>>>>>> 195a6e8 (11)
 <COMMENT_SHORT>{
 [\n\r] {  BEGIN INITIAL; line=line+1; col=0; }
-. {  /* ignore comment */ }
+. {  /* 单行注释 */ }
 }
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -164,7 +164,7 @@ extern int line, col;
 <COMMENT_LONG>{
 "*/" {  BEGIN INITIAL;  }
 [\n\r] { line=line+1; col=0;  }
-. { /* ignore comment */ }
+. { /* 多行注释 */ }
 }
 
 <INITIAL>{
@@ -222,7 +222,7 @@ extern int line, col;
 " "   { col+=1; }
 "\t" { col+=4; }
 
-.	{ printf("Unknown character:%s!! line=%d,col=%d\n",yytext,line,col); }
+.	{ printf("词法错误: 未知字符: %s 在 %d 行 %d 列\n", yytext, line, col); }
 }
 
 %%
