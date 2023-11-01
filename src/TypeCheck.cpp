@@ -59,9 +59,6 @@ void check_Prog(std::ostream* out, aA_program p)
 
         if(ele->kind == A_programStructDefKind){
             check_StructDef(out, ele->u.structDef);
-        }
-        if(ele->kind == A_programVarDeclStmtKind){
-            // check_Global_VarDecl(out, ele->u.varDeclStmt);
         }    
     }
 
