@@ -47,8 +47,7 @@ void print_token_map(typeMap* map){
 void check_Prog(std::ostream* out, aA_program p)
 {
     // p is the root of AST tree.
-    for (auto ele : p->programElements)
-    {
+    for (auto ele : p->programElements){
     /*
         Write your code here.
 
@@ -56,7 +55,14 @@ void check_Prog(std::ostream* out, aA_program p)
         1. Design the order of checking the program elements to meet the requirements that funtion declaration and global variable declaration can be used anywhere in the program.
 
         2. Many types of statements indeed collapse to some same units, so a good abstract design will help you reduce the amount of your code.
-    */    
+    */
+
+        if(ele->kind == A_programStructDefKind){
+            check_StructDef(out, ele->u.structDef);
+        }
+        if(ele->kind == A_programVarDeclStmtKind){
+            // check_Global_VarDecl(out, ele->u.varDeclStmt);
+        }    
     }
 
     for (auto ele : p->programElements)
@@ -87,6 +93,14 @@ void check_VarDecl(std::ostream* out, aA_varDeclStmt vd)
         //   let a[5]:int;
         
         /* write your code here*/
+        string* name;
+        A_pos pos;
+        aA_type type;
+        if(vd->u.varDecl->kind == A_varDeclType::A_varDeclScalarKind){
+            name = vd->u.varDecl->u.declScalar->id;
+            pos = vd->u.varDecl->u.declScalar->pos;
+            type = vd->u.varDecl->u.declScalar->type;
+        }
     }
     else if (vd->kind == A_varDeclStmtType::A_varDefKind){
         // if both declaration and initialization 
@@ -111,6 +125,12 @@ void check_StructDef(std::ostream* out, aA_structDef sd)
     //      }
     
     /* write your code here */
+    if(struct2Members.count((*sd->id)) > 0){
+        error_print(out, sd->pos, "local variables dplicates with function params.");
+    }else{
+        vector<aA_varDecl>* paramMap = new vector<aA_varDecl>(sd->varDecls);
+        struct2Members.emplace(*(sd->id), paramMap);
+    }
     return;
 }
 
