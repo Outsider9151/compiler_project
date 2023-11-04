@@ -296,7 +296,11 @@ void print_aA_VarDeclScalar(aA_varDeclScalar varDeclScalar, ostream& os){
 =======
 >>>>>>> 0d25088 (fix null type support)
 =======
+<<<<<<< HEAD
 >>>>>>> 0d25088 (fix null type support)
+=======
+>>>>>>> 7a839f2e14d9aa0e1e03695f1067358dcacb1821
+>>>>>>> 20f2cc188524329d175f9a2def6d2e37850a620f
     os << *(varDeclScalar->id);
     if(varDeclScalar->type){
         os << ":";
@@ -308,7 +312,11 @@ void print_aA_VarDeclScalar(aA_varDeclScalar varDeclScalar, ostream& os){
 =======
 >>>>>>> 0d25088 (fix null type support)
 =======
+<<<<<<< HEAD
 >>>>>>> 0d25088 (fix null type support)
+=======
+>>>>>>> 7a839f2e14d9aa0e1e03695f1067358dcacb1821
+>>>>>>> 20f2cc188524329d175f9a2def6d2e37850a620f
 }
 
 void print_aA_VarDeclArray(aA_varDeclArray varDeclArray, ostream& os){
@@ -327,7 +335,11 @@ void print_aA_VarDeclArray(aA_varDeclArray varDeclArray, ostream& os){
 =======
 >>>>>>> 0d25088 (fix null type support)
 =======
+<<<<<<< HEAD
 >>>>>>> 0d25088 (fix null type support)
+=======
+>>>>>>> 7a839f2e14d9aa0e1e03695f1067358dcacb1821
+>>>>>>> 20f2cc188524329d175f9a2def6d2e37850a620f
 }
 
 void print_aA_VarDecl(aA_varDecl varDecl, ostream& os){
@@ -356,7 +368,11 @@ void print_aA_VarDefScalar(aA_varDefScalar varDefScalar, ostream& os){
 =======
 >>>>>>> 0d25088 (fix null type support)
 =======
+<<<<<<< HEAD
 >>>>>>> 0d25088 (fix null type support)
+=======
+>>>>>>> 7a839f2e14d9aa0e1e03695f1067358dcacb1821
+>>>>>>> 20f2cc188524329d175f9a2def6d2e37850a620f
     os << *(varDefScalar->id);
     if(varDefScalar->type){
         os << ":";
@@ -388,6 +404,9 @@ void print_aA_VarDefArray(aA_varDefArray varDefArray, ostream& os){
 =======
     os << varDefArray->len << "]";
 >>>>>>> 4990744 (fix print_aA_VarDefArray)
+=======
+    os << varDefArray->len << "]";
+>>>>>>> 7a839f2e14d9aa0e1e03695f1067358dcacb1821
     if(varDefArray->type){
         os << ":";
         print_aA_Type(varDefArray->type, os);

@@ -23,6 +23,7 @@ extern int  yywrap();
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 // TODO:
 // your parser
@@ -30,11 +31,15 @@ extern int  yywrap();
 =======
 >>>>>>> 67cd423 (格式修改)
 =======
+>>>>>>> 20f2cc188524329d175f9a2def6d2e37850a620f
+=======
 // TODO:
 // your parser
 >>>>>>> 703b848 (okk)
 =======
 >>>>>>> 67cd423 (格式修改)
+=======
+>>>>>>> 7a839f2e14d9aa0e1e03695f1067358dcacb1821
 
 %union {
   A_pos pos;
@@ -112,6 +117,7 @@ extern int  yywrap();
 %token <pos> ARROW
 %token <pos> RET
 %token <pos> DOT
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 %token <pos> CONTINUE
@@ -253,6 +259,8 @@ extern int  yywrap();
 %token <pos> ID
 =======
 >>>>>>> 9281052 (根据cpp文件进行的修改)
+=======
+>>>>>>> 20f2cc188524329d175f9a2def6d2e37850a620f
 %token <pos> CONTINUE
 %token <pos> BREAK
 %token <pos> IF
@@ -392,6 +400,8 @@ extern int  yywrap();
 %token <pos> ID
 =======
 >>>>>>> 9281052 (根据cpp文件进行的修改)
+=======
+>>>>>>> 7a839f2e14d9aa0e1e03695f1067358dcacb1821
 %token <pos> CONTINUE
 %token <pos> BREAK
 %token <pos> IF
@@ -882,6 +892,7 @@ Type: INT
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 %start Program
 
 %%                   /* beginning of rules section */
@@ -1320,6 +1331,7 @@ Type: INT
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 %start Program
 
 %%                   /* beginning of rules section */
@@ -1756,6 +1768,10 @@ Type: INT
 
 %%
 
+=======
+=======
+>>>>>>> 7a839f2e14d9aa0e1e03695f1067358dcacb1821
+>>>>>>> 20f2cc188524329d175f9a2def6d2e37850a620f
 extern "C"{
 void yyerror(char * s)
 =======
@@ -1780,11 +1796,13 @@ int yywrap()
   return(1);
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 57849de (新尝试，有bug)
 =======
 }
 >>>>>>> d01065b (架构已经差不多了，现在根据给出的Ast节点结构细调)
 =======
+<<<<<<< HEAD
 void yyerror(const char *s)
 =======
 extern "C"{
@@ -1802,3 +1820,7 @@ int yywrap()
 =======
 }
 >>>>>>> d01065b (架构已经差不多了，现在根据给出的Ast节点结构细调)
+=======
+}
+>>>>>>> 7a839f2e14d9aa0e1e03695f1067358dcacb1821
+>>>>>>> 20f2cc188524329d175f9a2def6d2e37850a620f

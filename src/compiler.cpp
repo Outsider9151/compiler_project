@@ -48,4 +48,8 @@ int main(int argc, char * argv[]) {
 =======
 >>>>>>> d2491f2 (test)
 =======
+<<<<<<< HEAD
 >>>>>>> d2491f2 (test)
+=======
+>>>>>>> 7a839f2e14d9aa0e1e03695f1067358dcacb1821
+>>>>>>> 20f2cc188524329d175f9a2def6d2e37850a620f
