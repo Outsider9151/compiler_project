@@ -290,19 +290,25 @@ void print_aA_AssignStmt(aA_assignStmt assignStmt, ostream& os){
 void print_aA_VarDeclScalar(aA_varDeclScalar varDeclScalar, ostream& os){
     if(!varDeclScalar) return;
 <<<<<<< HEAD
+<<<<<<< HEAD
     tab++;
     print_tab(os, "A_varDeclScalar");
 =======
 >>>>>>> 0d25088 (fix null type support)
+=======
+>>>>>>> 7a839f2e14d9aa0e1e03695f1067358dcacb1821
     os << *(varDeclScalar->id);
     if(varDeclScalar->type){
         os << ":";
         print_aA_Type(varDeclScalar->type, os);
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
     tab--;
 =======
 >>>>>>> 0d25088 (fix null type support)
+=======
+>>>>>>> 7a839f2e14d9aa0e1e03695f1067358dcacb1821
 }
 
 void print_aA_VarDeclArray(aA_varDeclArray varDeclArray, ostream& os){
@@ -316,9 +322,12 @@ void print_aA_VarDeclArray(aA_varDeclArray varDeclArray, ostream& os){
         print_aA_Type(varDeclArray->type, os);
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
     tab--;
 =======
 >>>>>>> 0d25088 (fix null type support)
+=======
+>>>>>>> 7a839f2e14d9aa0e1e03695f1067358dcacb1821
 }
 
 void print_aA_VarDecl(aA_varDecl varDecl, ostream& os){
@@ -341,10 +350,13 @@ void print_aA_VarDecl(aA_varDecl varDecl, ostream& os){
 void print_aA_VarDefScalar(aA_varDefScalar varDefScalar, ostream& os){
     if(!varDefScalar) return;
 <<<<<<< HEAD
+<<<<<<< HEAD
     tab++;
     print_tab(os, "A_varDefScalar");
 =======
 >>>>>>> 0d25088 (fix null type support)
+=======
+>>>>>>> 7a839f2e14d9aa0e1e03695f1067358dcacb1821
     os << *(varDefScalar->id);
     if(varDefScalar->type){
         os << ":";
@@ -362,6 +374,7 @@ void print_aA_VarDefArray(aA_varDefArray varDefArray, ostream& os){
     os << *(varDefArray->id) << "[";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     os << varDefArray->len << "]";
 =======
     os << varDefArray->len << "]:";
@@ -369,6 +382,9 @@ void print_aA_VarDefArray(aA_varDefArray varDefArray, ostream& os){
 =======
     os << varDefArray->len << "]";
 >>>>>>> 4990744 (fix print_aA_VarDefArray)
+=======
+    os << varDefArray->len << "]";
+>>>>>>> 7a839f2e14d9aa0e1e03695f1067358dcacb1821
     if(varDefArray->type){
         os << ":";
         print_aA_Type(varDefArray->type, os);

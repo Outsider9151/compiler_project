@@ -8,11 +8,17 @@ extern int line, col;
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 7a839f2e14d9aa0e1e03695f1067358dcacb1821
 %start COMMENT_SHORT COMMENT_LONG
 
 %%
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 7a839f2e14d9aa0e1e03695f1067358dcacb1821
 <COMMENT_SHORT>{
 [\n\r] {  BEGIN INITIAL; line=line+1; col=0; }
 . {  /* 单行注释 */ }
@@ -82,6 +88,7 @@ extern int line, col;
 .	{ printf("词法错误: 未知字符: %s 在 %d 行 %d 列\n", yytext, line, col); }
 }
 
+<<<<<<< HEAD
 %%
 =======
 // TODO:
@@ -227,3 +234,6 @@ extern int line, col;
 
 %%
 >>>>>>> 703b848 (okk)
+=======
+%%
+>>>>>>> 7a839f2e14d9aa0e1e03695f1067358dcacb1821
