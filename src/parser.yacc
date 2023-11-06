@@ -448,11 +448,11 @@ BoolUOpExpr: NOT BoolUnit
 }
 ;
 
-BoolBiOpExpr: BoolExpr OR BoolUnit
+BoolBiOpExpr: BoolExpr OR BoolExpr
 {
     $$ = A_BoolBiOpExpr($1->pos, A_or, $1, $3);
 }
-| BoolExpr AND BoolUnit
+| BoolExpr AND BoolExpr
 {
     $$ = A_BoolBiOpExpr($1->pos, A_and, $1, $3);
 }
