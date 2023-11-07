@@ -1,4 +1,8 @@
 #include "TypeCheck.h"
+#include <unordered_map>
+#include <unordered_set>
+#include <string>
+#include <iostream>
 
 // maps to store the type information. Feel free to design new data structures if you need.
 typeMap g_token2Type; // global token ids to type
@@ -57,6 +61,15 @@ void check_Prog(std::ostream* out, aA_program p)
 
         2. Many types of statements indeed collapse to some same units, so a good abstract design will help you reduce the amount of your code.
     */    
+        switch (ele->kind)
+        {
+        case A_programElementType::A_programFnDeclStmtKind:
+            check_VarDecl(out, ele->u.varDeclStmt);
+            break;
+        
+        default:
+            break;
+        }
     }
 
     for (auto ele : p->programElements)
@@ -73,7 +86,46 @@ void check_Prog(std::ostream* out, aA_program p)
     return;
 }
 
+std::unordered_map<std::string, std::string> variableTypes; // A map to store variable types
+std::unordered_set<std::string> declaredNames; // A set to keep track of declared variable names
 
+// Check if a variable name is already declared
+bool isNameDeclared(const std::string& varName) {
+    return declaredNames.find(varName) != declaredNames.end();
+}
+
+// Check if a variable type is valid
+bool isTypeValid(aA_type varType) {
+    if (!varType) {
+        return false; // No type provided, invalid
+    }
+
+    if (varType->u.nativeType == A_nativeType::A_intTypeKind) {
+        return true; // Integer type (e.g., 'int') is valid
+    }
+    return false; // Invalid type by default
+}
+
+void check_RightVal(std::ostream* out, aA_rightVal rightVal, aA_type varType) {
+    if (!rightVal) {
+        *out << "Error: Missing initialization value." << std::endl;
+    } else {
+        // 根据 A_rightValType 的值来判断 rightVal 的类型
+        switch (rightVal->kind) {
+            case A_arithExprValKind:
+                if (varType && varType->u.nativeType == A_nativeType::A_intTypeKind) {
+                    // 处理整数类型初始化
+                } else {
+                    *out << "Error: Type mismatch. Expected an integer value." << std::endl;
+                }
+                break;
+
+            default:
+                *out << "Error: Unsupported value type." << std::endl;
+                break;
+        }
+    }
+}
 void check_VarDecl(std::ostream* out, aA_varDeclStmt vd)
 {
     // variable declaration statement 
@@ -87,6 +139,31 @@ void check_VarDecl(std::ostream* out, aA_varDeclStmt vd)
         //   let a[5]:int;
         
         /* write your code here*/
+        aA_varDecl varDecl = vd->u.varDecl;
+        if (varDecl->kind == A_varDeclType::A_varDeclScalarKind) {
+            // Handle variable declaration without initialization
+            aA_varDeclScalar varDeclScalar = varDecl->u.declScalar;
+            
+            // Extract type and variable name from varDeclScalar
+            aA_type varType = varDeclScalar->type;
+            std::string varName = *varDeclScalar->id; // Dereference the std::string*
+
+            // Check if the variable name is unique
+            if (isNameDeclared(varName)) {
+                *out << "Error: Variable '" << varName << "' is already declared." << std::endl;
+            } else {
+                declaredNames.insert(varName);
+
+                if (!isTypeValid(varType)) {
+                    *out << "Error: Invalid type for variable '" << varName << "'." << std::endl;
+                }
+            }
+        }
+        
+        else if (vd->kind == A_varDeclType::A_varDeclArrayKind) {
+            // Handle array declaration (if needed)
+        }
+
     }
     else if (vd->kind == A_varDeclStmtType::A_varDefKind){
         // if both declaration and initialization 
@@ -94,6 +171,31 @@ void check_VarDecl(std::ostream* out, aA_varDeclStmt vd)
         //   let a:int = 5;
         
         /* write your code here */
+        aA_varDef varDef = vd->u.varDef;
+        if (varDef->kind == A_varDefType::A_varDefScalarKind) {
+            // Handle variable declaration with initialization
+            aA_varDefScalar varDefScalar = varDef->u.defScalar;
+
+            // Extract type, variable name, and initialization expression
+            aA_type varType = varDefScalar->type;
+            std::string varName = *varDefScalar->id; // Dereference the std::string*
+            aA_rightVal initialValue = varDefScalar->val;
+
+            if (isNameDeclared(varName)) {
+                *out << "Error: Variable '" << varName << "' is already declared." << std::endl;
+            } else {
+                declaredNames.insert(varName);
+
+                if (!isTypeValid(varType)) {
+                    *out << "Error: Invalid type for variable '" << varName << "'." << std::endl;
+                }
+
+                check_RightVal(out, varDefScalar->val, varType);
+            }
+        }
+        else if (varDef->kind == A_varDefType::A_varDefArrayKind) {
+            // Handle array declaration with initialization (if needed)
+        }
     }
     return;
 }
