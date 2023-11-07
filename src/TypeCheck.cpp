@@ -7,10 +7,12 @@
 // maps to store the type information. Feel free to design new data structures if you need.
 typeMap g_token2Type; // global token ids to type
 typeMap funcparam_token2Type; // func params token ids to type
+typeMap func2retType;
 
 paramMemberMap func2Param;
 paramMemberMap struct2Members;
 
+std::unordered_map<std::string, std::string> funcDecl;
 
 // private util functions. You can use these functions to help you debug.
 void error_print(std::ostream* out, A_pos p, string info)
@@ -63,10 +65,12 @@ void check_Prog(std::ostream* out, aA_program p)
     */    
         switch (ele->kind)
         {
-        case A_programElementType::A_programFnDeclStmtKind:
+        case A_programFnDeclStmtKind:
             check_VarDecl(out, ele->u.varDeclStmt);
             break;
-        
+        case A_programFnDefKind:
+            check_FnDef(out, ele->u.fnDef);
+            break;
         default:
             break;
         }
@@ -256,11 +260,13 @@ void check_FnDecl(std::ostream* out, aA_fnDecl fd)
     //      fn main(a:int, b:int)->int
     if (!fd)
         return;
-        
+    string name = *(fd->id);   
     /*  
         write your code here
         Hint: you may need to check if the function is already declared
     */
+    check_mulParaNames(out, fd->paramDecl->varDecls);
+    check_typeValid(out, fd->type);
     return;
 }
 
@@ -286,11 +292,54 @@ void check_FnDef(std::ostream* out, aA_fnDef fd)
     //      }
     if (!fd)
         return;
-    check_FnDecl(out, fd->fnDecl);
     /*  
         write your code here 
         Hint: you may pay attention to the function parameters, local variables and global variables.
     */
+    string name = *(fd->fnDecl->id);
+    if (funcDecl.find(name) == funcDecl.end()){
+        check_multiDecl(out, name, fd->pos);
+        check_FnDecl(out, fd->fnDecl);
+        func2Param[name] = fd->fnDecl->paramDecl->varDecls;
+        funcDecl[name] = "func_def";
+        func2retType[name] = fd->fnDecl->type;
+    }
+    else if (funcDecl[name] == "func_def")
+    {
+        check_FnDecl(out, fd->fnDecl);
+        auto curList = fd->fnDecl->paramDecl->varDecls;
+        auto prevList = func2Param[name];
+        for (int i = 0; i < curList.size(); i++)
+        {
+            auto curNode = getVarDeclType(curList[i]);
+            auto prevNode = getVarDeclType(prevList[i]);
+            if (getVarDeclName(curList[i]) != getVarDeclName(prevList[i]))
+            {
+                error_print(out, curNode->pos, "The variable name is not the same as func declaration!");
+            }
+            if (check_aATypeSame(curNode, prevNode) == false)
+            {
+                error_print(out, curNode->pos, "The variable type is not the same as func declaration!");
+            }
+        }
+        auto curReturnType = fd->fnDecl->type;
+        auto prevReturnType = func2retType[name];
+        if (check_aATypeSame(curReturnType, prevReturnType) == false)
+        {
+            error_print(out, curReturnType->pos, "The return variable type is not the same as func declaration!");
+        }
+        funcDecl[name] = "func_def";
+        for (auto i : fd->fnDecl->paramDecl->varDecls)
+        {
+            func2Param[name].push_back(i);
+        }
+    }
+    else if (funcDecl[name] == "func_def")
+    {
+        error_print(out, fd->pos, "Multiple func definition!");
+    }
+
+    
     return;
 }
 
@@ -348,15 +397,54 @@ void check_AssignStmt(std::ostream* out, aA_assignStmt as){
 }
 
 
-void check_ArrayExpr(std::ostream* out, aA_arrayExpr ae){
+aA_type check_ArrayExpr(std::ostream* out, aA_arrayExpr ae){
     if(!ae)
-        return;
+        return nullptr;
     /*
         Example:
             a[1] = 0;
         Hint:
             check the validity of the array index
     */
+    string arrName = *(ae->arr);
+    aA_type arrType = idToType(out, ae->pos, arrName);
+    if(arrType == nullptr)
+        error_print(out, ae->pos, "Array name is not declared");
+    if (arrType->is_array == false)
+        error_print(out, ae->pos, "This variable " + arrName + " is a scalar type!");
+    switch (ae->idx->kind){
+        case (A_indexExprKind::A_numIndexKind):
+        {
+            aA_type retType = new aA_type_;
+            retType->cur_scope = arrType->cur_scope;
+            retType->is_array = false;
+            retType->pos = arrType->pos;
+            retType->type = arrType->type;
+            retType->u = arrType->u;
+            return retType;
+        }
+        break;
+        case (A_indexExprKind::A_idIndexKind):
+        {
+            string bTypeName = *(ae->idx->u.id);
+            aA_type bType = idToType(out, ae->idx->pos ,bTypeName);
+            if (bType == nullptr)
+                error_print(out, ae->idx->pos, "The name of the val in array brackets here is not declared!");
+            if (bType->is_array == true)
+                error_print(out, ae->idx->pos, "The name of the val in array brackets here is an array!");
+            if (bType->type == A_dataType::A_structTypeKind)
+                error_print(out, ae->idx->pos, "The name of the val in array brackets here is a struct!");
+            aA_type retType = new aA_type_;
+            retType->cur_scope = arrType->cur_scope;
+            retType->is_array = false;
+            retType->pos = arrType->pos;
+            retType->type = arrType->type;
+            retType->u = arrType->u;
+            return retType;
+        }
+
+    }
+    return nullptr;
 }
 
 
@@ -389,43 +477,61 @@ void check_IfStmt(std::ostream* out, aA_ifStmt is){
 }
 
 
-void check_BoolExpr(std::ostream* out, aA_boolExpr be){
+aA_type check_BoolExpr(std::ostream* out, aA_boolExpr be){
     if(!be)
-        return;
+        return nullptr;
     switch (be->kind)
     {
     case A_boolExprType::A_boolBiOpExprKind:
-        /* write your code here */
-        break;
+        aA_type type1 = check_BoolExpr(out,be->u.boolBiOpExpr->left);
+        aA_type type2 = check_BoolExpr(out,be->u.boolBiOpExpr->right);
+        if(check_aATypeSame(getBoolType(),type1) == false)
+                error_print(out,be->pos,"left val type and bool not same!");
+        if(check_aATypeSame(getBoolType(), type2) == false)
+            error_print(out,be->pos,"right val type and bool not same");
+        aA_type retType = new aA_type_;
+        retType->is_array=false;
+        retType->is_bool=true;
+        retType->pos=be->pos;
+        return retType;
     case A_boolExprType::A_boolUnitKind:
-        check_BoolUnit(out, be->u.boolUnit);
-        break;
+        aA_type type1 = check_BoolUnit(out, be->u.boolUnit);
+        if(check_aATypeSame(getBoolType(), type1)==false)
+            error_print(out, be->pos, "val type and bool not same");
+        return type1;
     default:
         break;
     }
-    return;
+    return nullptr;
 }
 
 
-void check_BoolUnit(std::ostream* out, aA_boolUnit bu){
+aA_type check_BoolUnit(std::ostream* out, aA_boolUnit bu){
     if(!bu)
-        return;
+        return nullptr;
     switch (bu->kind)
     {
         case A_boolUnitType::A_comOpExprKind:{
-            /* write your code here */
+            aA_type exprUnit1 = check_ExprUnit(out,bu->u.comExpr->left);
+            aA_type exprUnit2 = check_ExprUnit(out,bu->u.comExpr->right);
+            if(check_aATypeSame(exprUnit1,getIntType()) == false)
+                error_print(out,bu->u.comExpr->left->pos,"Left expr type not int!");
+            if(check_aATypeSame(exprUnit2,getIntType()) == false)
+                error_print(out, bu->u.comExpr->right->pos, "Right expr type not int!");
+            aA_type retType = new aA_type_;
+            retType->is_array = false;
+            retType->is_bool = true;
+            retType->pos = bu->pos;
+            return retType;
         }
-            break;
         case A_boolUnitType::A_boolExprKind:
-            /* write your code here */
-            break;
+            return check_BoolExpr(out,bu->u.boolExpr);
         case A_boolUnitType::A_boolUOpExprKind:
-            /* write your code here */
-            break;
+            return check_BoolUnit(out,bu->u.boolUOpExpr->cond);
         default:
             break;
     }
-    return;
+    return nullptr;
 }
 
 
@@ -436,35 +542,48 @@ aA_type check_ExprUnit(std::ostream* out, aA_exprUnit eu){
     // Feel free to change the design pattern if you need.
     if(!eu)
         return nullptr;
-    aA_type ret;
+    aA_type ret = nullptr;
     switch (eu->kind)
     {
         case A_exprUnitType::A_idExprKind:{
-            /* write your code here */
+            string name = *(eu->u.id);
+            auto t = idToType(out,eu->pos,name);
+            if (t == nullptr)
+                error_print(out, eu->pos, name + " not found");
+            return t;
         }
             break;
         case A_exprUnitType::A_numExprKind:{
-            /* write your code here */
+            ret = new aA_type_;
+            ret->is_array = false;
+            ret->pos = eu->pos;
+            ret->type = A_dataType::A_nativeTypeKind;
+            ret->u.nativeType = A_nativeType::A_intTypeKind;
+            return ret;
         }
             break;
         case A_exprUnitType::A_fnCallKind:{
-            /* write your code here */
+            aA_type fnRetType = check_FnCall(out,eu->u.callExpr);
+            if(check_aATypeSame(getIntType(),fnRetType) == false){
+                error_print(out,eu->pos, "The func return type is not compatible with expr Unit");
+            }
+            return fnRetType;
         }
             break;
         case A_exprUnitType::A_arrayExprKind:{
-            /* write your code here */
+            return check_ArrayExpr(out,eu->u.arrayExpr);
         }
             break;
         case A_exprUnitType::A_memberExprKind:{
-            /* write your code here */
+            return check_MemberExpr(out,eu->u.memberExpr);
         }
             break;
         case A_exprUnitType::A_arithExprKind:{
-            /* write your code here */
+            return check_arithExprValValid(out,eu->u.arithExpr);
         }
             break;
         case A_exprUnitType::A_arithUExprKind:{
-            /* write your code here */
+            return check_ExprUnit(out,eu->u.arithUExpr->expr);
         }
             break;
     }
@@ -508,3 +627,185 @@ void check_ReturnStmt(std::ostream* out, aA_returnStmt rs){
     return;
 }
 
+void check_multiDecl(std::ostream *out, string name, A_pos pos){
+    if (g_token2Type.find(name) != g_token2Type.end())
+    {
+        error_print(out, pos, name + " dplicates with global variable");
+    }
+    // struct
+    if (struct2Members.find(name) != struct2Members.end())
+    {
+        error_print(out, pos, name + " dplicates with struct variable");
+    }
+    if (funcDecl.find(name) != funcDecl.end())
+    {
+        error_print(out, pos, name + " dplicates with func name");
+    }
+    if (funcparam_token2Type.find(name) != funcparam_token2Type.end())
+    {
+        error_print(out, pos, name + " dplicates with func param");
+    }
+}
+
+void check_mulParaNames(std::ostream *out, vector<aA_varDecl> varDeclList)
+{
+    vector<string> paramNames;
+    for (auto varDecl : varDeclList)
+    {
+        check_varDeclValid(out, varDecl);
+        string name = getVarDeclName(varDecl);
+        for (auto paramName : paramNames)
+        {
+            if (name == paramName)
+            {
+                error_print(out, varDecl->pos, "Declared a same variable name!");
+            }
+        }
+        paramNames.push_back(name);
+    }
+}
+
+void check_typeValid(std::ostream *out, aA_type varType)
+{
+    if (varType == nullptr)
+        return;
+    string name = getATypeName(varType);
+    if (name != "int" && struct2Members.find(name) == struct2Members.end())
+        error_print(out, varType->pos, "Undeclared variable type!");
+}
+
+void check_varDeclValid(std::ostream *out, aA_varDecl varDecl)
+{
+    aA_type varType = getVarDeclType(varDecl);
+    check_typeValid(out, varType);
+}
+
+bool check_aATypeSame(aA_type a, aA_type b)
+{
+    if(a->is_bool==true && b->is_bool==true)
+        return true;
+    else if(a->is_bool==true || b->is_bool==true)
+        return false;
+    else
+    {
+        if (a->is_array == b->is_array)
+        {
+            if (a->type == b->type)
+            {
+                if (a->type == A_dataType::A_nativeTypeKind)
+                    return true;
+                else
+                {
+                    if (*(a->u.structType) == *(b->u.structType))
+                        return true;
+                    else
+                        return false;
+                }
+            }
+            else
+                return false;
+        }
+        else
+            return false;
+    }
+
+}
+
+string getATypeName(aA_type type)
+{
+    if(type->type == A_dataType::A_nativeTypeKind){
+        return "int";
+    }else if (type->type == A_dataType::A_structTypeKind)
+    {
+        return *(type->u.structType);
+    }
+    return "nulltype";
+}
+
+string getVarDeclName(aA_varDecl x){
+    if(!x) 
+        return nullptr;
+    switch (x->kind)
+    {
+        
+        case (A_varDeclType::A_varDeclArrayKind):
+            return *(x->u.declArray->id);
+        break;
+        case (A_varDeclType::A_varDeclScalarKind):
+            return *(x->u.declScalar->id);
+        break;
+    }
+    return "";
+}
+
+aA_type getVarDeclType(aA_varDecl x){
+    if(x->kind == A_varDeclType::A_varDeclScalarKind){
+        x->u.declScalar->type->is_array = false;
+        return x->u.declScalar->type;
+    }
+    else if (x->kind == A_varDeclType::A_varDeclArrayKind)
+    {
+        x->u.declArray->type->is_array = true;
+        return x->u.declArray->type;
+    }
+    return nullptr;
+
+}
+
+aA_type check_FnCall(std::ostream *out, aA_fnCall fc)
+{
+    if (!fc)
+        return nullptr;
+    string fnName = *(fc->fn);
+    if(func2retType.find(fnName) == func2retType.end())
+        error_print(out,fc->pos,"Cannot find the corresponding func name "+ fnName);
+    auto varDeclVec = func2Param[fnName];
+    if(varDeclVec.size()!=fc->vals.size())
+        error_print(out, fc->pos, "The fn Call stmt's parameters size are not equal to the func declaration's in fn name "+fnName);
+    for(int i = 0;i < varDeclVec.size();i++){
+        auto varDecl = varDeclVec[i];
+        auto rightVal = fc->vals[i];
+        if(!check_aATypeSame(getVarDeclType(varDecl), check_rightValValid(out,rightVal))){
+            error_print(out, fc->pos, "The " + std::to_string(i) + " th parameter in fnCall doesn't match the one in fn declaration in fn name" + fnName);
+        }
+    }
+    return func2retType[fnName];
+}
+
+aA_type check_rightValValid(std::ostream *out, aA_rightVal rightVal)
+{
+    if(rightVal == nullptr) return nullptr;
+    switch (rightVal->kind)
+    {
+        case (A_rightValType::A_arithExprValKind):
+        {
+            return check_arithExprValValid(out, rightVal->u.arithExpr);
+            break;
+        }
+        case (A_rightValType::A_boolExprValKind):
+        {
+            return check_BoolExpr(out,rightVal->u.boolExpr);
+            break;
+        }
+    }
+    return nullptr;
+}
+
+aA_type check_arithExprValValid(std::ostream *out, aA_arithExpr arithExpr)
+{
+    if(!arithExpr) 
+        return nullptr;
+    switch (arithExpr->kind)
+    {
+    case (A_arithExprType::A_exprUnitKind):
+        return check_ExprUnit(out, arithExpr->u.exprUnit);
+    }
+    return nullptr;
+}
+
+aA_type getIntType(){
+    aA_type intType = new aA_type_;
+    intType->is_array=false;
+    intType->type=A_dataType::A_nativeTypeKind;
+    return intType;
+}
