@@ -213,9 +213,42 @@ void check_StructDef(std::ostream* out, aA_structDef sd)
     //      }
     
     /* write your code here */
-    return;
-}
+    // Get structure name and fields
+     // Get structure name and fields
+    std::string structName = *sd->id;
+    vector<aA_varDecl> fields = sd->varDecls;
 
+    // Initialize a set to store field names for uniqueness checking
+    std::unordered_set<std::string> fieldNames;
+
+    for (aA_varDecl field : fields) {
+        if (field->kind == A_varDeclType::A_varDeclScalarKind) {
+            aA_varDeclScalar fieldScalar = field->u.declScalar;
+
+            // Get field type and name
+            aA_type fieldType = fieldScalar->type;
+            std::string fieldName = *fieldScalar->id; // Dereference the std::string*
+
+            // Check if the field name is unique within the structure
+            if (fieldNames.count(fieldName) > 0) {
+                *out << "Error: Field '" << fieldName << "' is already declared in the structure '" << structName << "'." << std::endl;
+            } else {
+                fieldNames.insert(fieldName);
+            }
+
+            // Check if the field type is valid
+            if (!isTypeValid(fieldType)) {
+                *out << "Error: Invalid type for field '" << fieldName << "' in the structure '" << structName << "'." << std::endl;
+            }
+        } else if (field->kind == A_varDeclType::A_varDeclArrayKind) {
+            // Handle array declaration (if needed)
+            // You can add array-specific type checking here
+        }
+    }
+    
+    return;
+
+}
 
 void check_FnDecl(std::ostream* out, aA_fnDecl fd)
 {
