@@ -174,7 +174,7 @@ void check_varDecl(std::ostream *out, aA_varDecl varDecl)
 
 aA_type getIntType(){
     aA_type intType = new aA_type_;
-    intType->is_array=false;
+    intType->is_array = false;
     intType->type=A_dataType::A_nativeTypeKind;
     return intType;
 }
@@ -191,7 +191,8 @@ aA_type check_arithBiopExpr(std::ostream * out, aA_arithBiOpExpr biopExpr){
 
 aA_type check_arithExprValValid(std::ostream *out, aA_arithExpr arithExpr)
 {
-    if(arithExpr==nullptr) return nullptr;
+    if(arithExpr == nullptr) 
+        return nullptr;
     switch (arithExpr->kind)
     {
     case (A_arithExprType::A_exprUnitKind):
@@ -565,9 +566,7 @@ void check_FnDef(std::ostream *out, aA_fnDef fd)
         string s = getVarDeclName(i);
         funcparam_token2Type[s] = type;
     }
-    
     cur++;
-    
     cur_func_name = name;
     for (auto stmt : fd->stmts)
     {
@@ -780,7 +779,7 @@ aA_type check_BoolExpr(std::ostream *out, aA_boolExpr be)
             aA_type type2 = check_BoolExpr(out,be->u.boolBiOpExpr->right);
             if(check_aATypeSame(getBoolType(),type1) == false)
                 error_print(out,be->pos,"left val type and bool not same!");
-            if(check_aATypeSame(getBoolType(), type2)==false)
+            if(check_aATypeSame(getBoolType(), type2) == false)
                 error_print(out,be->pos,"right val type and bool not same");
             aA_type retType = new aA_type_;
             retType->is_array=false;
@@ -791,7 +790,7 @@ aA_type check_BoolExpr(std::ostream *out, aA_boolExpr be)
         break;
         case A_boolExprType::A_boolUnitKind:{
             aA_type type1 = check_BoolUnit(out, be->u.boolUnit);
-            if(check_aATypeSame(getBoolType(), type1)==false)
+            if(check_aATypeSame(getBoolType(), type1) == false)
                 error_print(out, be->pos, "val type and bool not same");
             return type1;
         }
@@ -813,9 +812,9 @@ aA_type check_BoolUnit(std::ostream *out, aA_boolUnit bu)
     {
         aA_type exprUnit1 = check_ExprUnit(out,bu->u.comExpr->left);
         aA_type exprUnit2 = check_ExprUnit(out,bu->u.comExpr->right);
-        if(check_aATypeSame(exprUnit1,getIntType())==false)
+        if(check_aATypeSame(exprUnit1,getIntType()) == false)
             error_print(out,bu->u.comExpr->left->pos,"Left expr type not int!");
-        if(check_aATypeSame(exprUnit2,getIntType())==false)
+        if(check_aATypeSame(exprUnit2,getIntType()) == false)
             error_print(out, bu->u.comExpr->right->pos, "Right expr type not int!");
         aA_type retType = new aA_type_;
         retType->is_array = false;
@@ -873,7 +872,7 @@ aA_type check_ExprUnit(std::ostream *out, aA_exprUnit eu)
     case A_exprUnitType::A_fnCallKind:
     {
         aA_type fnRetType = check_FnCall(out,eu->u.callExpr);
-        if(check_aATypeSame(getIntType(),fnRetType)==false){
+        if(check_aATypeSame(getIntType(),fnRetType) == false){
             error_print(out,eu->pos, "The func return type is not compatible with expr Unit");
         }
         return fnRetType;
@@ -913,7 +912,7 @@ aA_type check_FnCall(std::ostream *out, aA_fnCall fc)
     auto varDeclVec = func2Param[fnName];
     if(varDeclVec.size()!=fc->vals.size())
         error_print(out, fc->pos, "The fn Call stmt's parameters size are not equal to the func declaration's in fn name "+fnName);
-    for(int i=0;i<varDeclVec.size();i++){
+    for(int i = 0;i < varDeclVec.size();i++){
         auto varDecl = varDeclVec[i];
         auto rightVal = fc->vals[i];
         if(!check_aATypeSame(getVarDeclType(varDecl),check_rightValValid(out,rightVal))){
@@ -951,7 +950,7 @@ void check_ReturnStmt(std::ostream *out, aA_returnStmt rs)
         return;
     aA_type rightValType = check_rightValValid(out,rs->retVal);
     aA_type funcRetType = func2retType[cur_func_name];
-    if(check_aATypeSame(funcRetType,rightValType)==false){
+    if(check_aATypeSame(funcRetType,rightValType) == false){
         error_print(out,rs->pos,"The ret value's type is incompatible with the func declarations's return type!");
     }
     return;
