@@ -10,17 +10,17 @@ paramMemberMap struct2Members; // struct name -> sturct param declarations
 
 std::unordered_map<std::string, std::string> funcDecl;
 
-int cur_scope = 1;
+int cur = 1;
 
 std::string cur_func_name = "";
 
 
-void minusCurScope()
+void clearCur()
 {
     vector<string> allDeleteNames;
     for (auto i : g_token2Type)
     {
-        if (i.second->cur_scope == cur_scope)
+        if (i.second->cur == cur)
         {
             allDeleteNames.push_back(i.first);
         }
@@ -28,7 +28,7 @@ void minusCurScope()
     for (auto i : allDeleteNames)
         g_token2Type.erase(i);
 
-    cur_scope--;
+    cur--;
 }
 
 // private util functions. You can use these functions to help you debug.
@@ -138,7 +138,7 @@ void check_VarDeclScalar(std::ostream *out, aA_varDeclScalar varDeclScalar)
     string name = *(varDeclScalar->id);
     check_multiDeclaration(out, name, varDeclScalar->pos);
     varDeclScalar->type->is_array = false;
-    varDeclScalar->type->cur_scope = cur_scope;
+    varDeclScalar->type->cur = cur;
     g_token2Type[name] = varDeclScalar->type;
 }
 
@@ -150,7 +150,7 @@ void check_VarDeclArray(std::ostream *out, aA_varDeclArray varDeclArray)
     check_multiDeclaration(out, name, varDeclArray->pos);
     varDeclArray->type->is_array = true;
     varDeclArray->type->len = varDeclArray->len;
-    varDeclArray->type->cur_scope = cur_scope;
+    varDeclArray->type->cur = cur;
     g_token2Type[name] = varDeclArray->type;
 }
 
@@ -240,7 +240,7 @@ void check_varDefScalar(std::ostream *out, aA_varDefScalar varDefScalar)
         }
     }
     varDefScalar->type->is_array = false;
-    varDefScalar->type->cur_scope = cur_scope;
+    varDefScalar->type->cur = cur;
     g_token2Type[*(varDefScalar->id)] = varDefScalar->type;
 }
 
@@ -272,7 +272,7 @@ void check_varDefArray(std::ostream *out, aA_varDefArray varDefArray)
     }
     varDefArray->type->is_array = true;
     varDefArray->type->len = varDefArray->len;
-    varDefArray->type->cur_scope = cur_scope;
+    varDefArray->type->cur = cur;
     g_token2Type[*(varDefArray->id)] = varDefArray->type;
 }
 
@@ -566,14 +566,14 @@ void check_FnDef(std::ostream *out, aA_fnDef fd)
         funcparam_token2Type[s] = type;
     }
     
-    cur_scope++;
+    cur++;
     
     cur_func_name = name;
     for (auto stmt : fd->stmts)
     {
         check_CodeblockStmt(out, stmt);
     }
-    minusCurScope();
+    clearCur();
     funcparam_token2Type.clear();
     cur_func_name="";
     return;
@@ -677,7 +677,7 @@ aA_type check_ArrayExpr(std::ostream *out, aA_arrayExpr ae)
         case (A_indexExprKind::A_numIndexKind):
         {
             aA_type retType = new aA_type_;
-            retType->cur_scope = arrType->cur_scope;
+            retType->cur = arrType->cur;
             retType->is_array = false;
             retType->pos = arrType->pos;
             retType->type = arrType->type;
@@ -696,7 +696,7 @@ aA_type check_ArrayExpr(std::ostream *out, aA_arrayExpr ae)
             if (bType->type == A_dataType::A_structTypeKind)
                 error_print(out, ae->idx->pos, "The name of the val in array brackets here is a struct!");
             aA_type retType = new aA_type_;
-            retType->cur_scope = arrType->cur_scope;
+            retType->cur = arrType->cur;
             retType->is_array = false;
             retType->pos = arrType->pos;
             retType->type = arrType->type;
@@ -749,15 +749,15 @@ void check_IfStmt(std::ostream *out, aA_ifStmt is)
     if (!is)
         return;
     check_BoolExpr(out, is->boolExpr);
-    cur_scope++;
+    cur++;
     for (aA_codeBlockStmt s : is->ifStmts)
         check_CodeblockStmt(out, s);
-    minusCurScope();
+    clearCur();
 
-    cur_scope++;
+    cur++;
     for (aA_codeBlockStmt s : is->elseStmts)
         check_CodeblockStmt(out, s);
-    minusCurScope();
+    clearCur();
 
     return;
 }
@@ -928,12 +928,12 @@ void check_WhileStmt(std::ostream *out, aA_whileStmt ws)
     if (!ws)
         return;
     check_BoolExpr(out, ws->boolExpr);
-    cur_scope++;
+    cur++;
     for (aA_codeBlockStmt s : ws->whileStmts)
     {
         check_CodeblockStmt(out, s);
     }
-    minusCurScope();
+    clearCur();
     return;
 }
 
