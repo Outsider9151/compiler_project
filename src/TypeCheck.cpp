@@ -15,16 +15,13 @@ int cur_scope = 1;
 std::string cur_func_name = "";
 
 
-// 清除所有curScope的varDecl
 void minusCurScope()
 {
     vector<string> allDeleteNames;
-    // kill all the variables
     for (auto i : g_token2Type)
     {
         if (i.second->cur_scope == cur_scope)
         {
-            // 不能在循环中改变结构体的值
             allDeleteNames.push_back(i.first);
         }
     }
