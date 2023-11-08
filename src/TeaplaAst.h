@@ -52,7 +52,7 @@ struct aA_type_ {
     A_dataType type;
     bool is_array;
     int len;
-    int cur_scope;
+    int cur;
     bool is_bool;
     union {
         A_nativeType nativeType;
