@@ -392,7 +392,7 @@ aA_type getVarDefType(aA_varDef x)
     return ret;
 }
 
-void check_type_valid(std::ostream *out, aA_type varType)
+void check_typeValid(std::ostream *out, aA_type varType)
 {
     if (!varType)
         return;
@@ -404,16 +404,16 @@ void check_type_valid(std::ostream *out, aA_type varType)
 void check_VarDeclValid(std::ostream *out, aA_varDecl varDecl)
 {
     aA_type varType = getVarDeclType(varDecl);
-    check_type_valid(out, varType);
+    check_typeValid(out, varType);
 }
 
 void check_VarDefValid(std::ostream *out, aA_varDef varDef)
 {
     aA_type varType = getVarDefType(varDef);
-    check_type_valid(out, varType);
+    check_typeValid(out, varType);
 }
 
-void check_multiple_params_names(std::ostream *out, vector<aA_varDecl> varDeclList)
+void check_MultiParams(std::ostream *out, vector<aA_varDecl> varDeclList)
 {
     vector<string> paramNames;
     for (auto varDecl : varDeclList)
@@ -437,7 +437,7 @@ void check_StructDef(std::ostream *out, aA_structDef sd)
         return;
     string name = *(sd->id);
     check_multiDeclaration(out, *(sd->id), sd->pos);
-    check_multiple_params_names(out, sd->varDecls);
+    check_MultiParams(out, sd->varDecls);
     struct2Members[name] = sd->varDecls;
     return;
 }
@@ -449,8 +449,8 @@ void check_FnDecl(std::ostream *out, aA_fnDecl fd)
     if (!fd)
         return;
     string name = *(fd->id);
-    check_multiple_params_names(out, fd->paramDecl->varDecls);
-    check_type_valid(out, fd->type);
+    check_MultiParams(out, fd->paramDecl->varDecls);
+    check_typeValid(out, fd->type);
 
     return;
 }
