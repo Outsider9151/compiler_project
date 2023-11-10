@@ -182,7 +182,7 @@ aA_type getIntType(){
 aA_type check_arithBiopExpr(std::ostream * out, aA_arithBiOpExpr biopExpr){
     aA_type operand1Type = check_arithExprValValid(out,biopExpr->left);
     aA_type operand2Type = check_arithExprValValid(out,biopExpr->right);
-    if(check_aATypeSame(getIntType(),operand1Type)==false)
+    if(check_aATypeSame(getIntType(),operand1Type) == false)
         error_print(out,operand1Type->pos,"ArithType 1 is not int!");
     if (check_aATypeSame(getIntType(), operand2Type) == false)
         error_print(out, operand2Type->pos, "ArithType 2 is not int!");
@@ -392,7 +392,7 @@ aA_type getVarDefType(aA_varDef x)
     return ret;
 }
 
-void check_type_valid(std::ostream *out, aA_type varType)
+void check_typeValid(std::ostream *out, aA_type varType)
 {
     if (!varType)
         return;
@@ -404,16 +404,16 @@ void check_type_valid(std::ostream *out, aA_type varType)
 void check_VarDeclValid(std::ostream *out, aA_varDecl varDecl)
 {
     aA_type varType = getVarDeclType(varDecl);
-    check_type_valid(out, varType);
+    check_typeValid(out, varType);
 }
 
 void check_VarDefValid(std::ostream *out, aA_varDef varDef)
 {
     aA_type varType = getVarDefType(varDef);
-    check_type_valid(out, varType);
+    check_typeValid(out, varType);
 }
 
-void check_multiple_params_names(std::ostream *out, vector<aA_varDecl> varDeclList)
+void check_MultiParams(std::ostream *out, vector<aA_varDecl> varDeclList)
 {
     vector<string> paramNames;
     for (auto varDecl : varDeclList)
@@ -437,7 +437,7 @@ void check_StructDef(std::ostream *out, aA_structDef sd)
         return;
     string name = *(sd->id);
     check_multiDeclaration(out, *(sd->id), sd->pos);
-    check_multiple_params_names(out, sd->varDecls);
+    check_MultiParams(out, sd->varDecls);
     struct2Members[name] = sd->varDecls;
     return;
 }
@@ -449,8 +449,8 @@ void check_FnDecl(std::ostream *out, aA_fnDecl fd)
     if (!fd)
         return;
     string name = *(fd->id);
-    check_multiple_params_names(out, fd->paramDecl->varDecls);
-    check_type_valid(out, fd->type);
+    check_MultiParams(out, fd->paramDecl->varDecls);
+    check_typeValid(out, fd->type);
 
     return;
 }
@@ -652,7 +652,7 @@ void check_AssignStmt(std::ostream *out, aA_assignStmt as)
     aA_type rightValType = check_rightValValid(out, as->rightVal);
     aA_type leftValType = check_leftValValid(out, as->leftVal);
     if (check_aATypeSame(leftValType, rightValType) != true)
-        error_print(out, as->pos, "The type of left val and right val doesn't match here!");
+        error_print(out, as->pos, "The type of left val and right val doesn't match");
     return;
 }
 
@@ -689,11 +689,11 @@ aA_type check_ArrayExpr(std::ostream *out, aA_arrayExpr ae)
             string bTypeName = *(ae->idx->u.id);
             aA_type bType = idToType(out, ae->idx->pos ,bTypeName);
             if (bType == nullptr)
-                error_print(out, ae->idx->pos, "The name of the val in array brackets here is not declared!");
+                error_print(out, ae->idx->pos, "The name of the val in array here is not declared!");
             if (bType->is_array == true)
-                error_print(out, ae->idx->pos, "The name of the val in array brackets here is an array!");
+                error_print(out, ae->idx->pos, "The name of the val in array here is an array!");
             if (bType->type == A_dataType::A_structTypeKind)
-                error_print(out, ae->idx->pos, "The name of the val in array brackets here is a struct!");
+                error_print(out, ae->idx->pos, "The name of the val in array here is a struct!");
             aA_type retType = new aA_type_;
             retType->cur = arrType->cur;
             retType->is_array = false;
@@ -908,10 +908,10 @@ aA_type check_FnCall(std::ostream *out, aA_fnCall fc)
         return nullptr;
     string fnName = *(fc->fn);
     if(func2retType.find(fnName)==func2retType.end())
-        error_print(out,fc->pos,"Cannot find the corresponding func name "+ fnName);
+        error_print(out,fc->pos,"Cannot find the corresponding function name "+ fnName);
     auto varDeclVec = func2Param[fnName];
     if(varDeclVec.size()!=fc->vals.size())
-        error_print(out, fc->pos, "The fn Call stmt's parameters size are not equal to the func declaration's in fn name "+fnName);
+        error_print(out, fc->pos, "The fn Call stmt's parameters size not equal to the func declaration's in fn name "+fnName);
     for(int i = 0;i < varDeclVec.size();i++){
         auto varDecl = varDeclVec[i];
         auto rightVal = fc->vals[i];
