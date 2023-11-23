@@ -50,10 +50,6 @@ typedef struct aA_program_* aA_program;
 struct aA_type_ {
     A_pos pos;
     A_dataType type;
-    bool is_array;
-    int len;
-    int cur;
-    bool is_bool;
     union {
         A_nativeType nativeType;
         string* structType;
@@ -77,13 +73,13 @@ struct aA_indexExpr_ {
 
 struct aA_arrayExpr_ {
     A_pos pos;
-    string* arr;
+    aA_leftVal arr;
     aA_indexExpr idx;
 };
 
 struct aA_memberExpr_ {
     A_pos pos;
-    string* structId;
+    aA_leftVal structId;
     string* memberId;
 };
 

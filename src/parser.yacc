@@ -34,6 +34,7 @@ extern int  yywrap();
   A_comExpr comExpr;
   A_boolUnit boolUnit;
   A_rightVal rightVal;
+  A_rightVal rightValOpt;
   A_leftVal leftVal;
   A_assignStmt assignStmt;
   A_varDeclScalar varDeclScalar;
@@ -124,6 +125,7 @@ extern int  yywrap();
 %type <assignStmt> AssignStmt
 %type <leftVal> LeftVal
 %type <rightVal> RightVal
+%type <rightVal> RightValOpt;
 %type <boolUnit> BoolUnit
 %type <comExpr> ComExpr
 %type <boolExpr> BoolExpr
@@ -228,11 +230,15 @@ CodeBlockStmt: VarDeclStmt
 }
 ;
 
-ReturnStmt: RET RightVal SEMICOLON
+ReturnStmt: RET RightValOpt SEMICOLON
 {
   $$ = A_ReturnStmt($1, $2);
 }
 ;
+
+RightValOpt: /* empty */
+           | RightVal
+           ;
 
 CallStmt: FnCall SEMICOLON
 {
@@ -522,15 +528,15 @@ ExprUnit: NUM
 }
 ;
 
-MemberExpr: ID DOT ID
+MemberExpr: LeftVal DOT ID
 {
-    $$ = A_MemberExpr($1->pos, $1->id, $3->id);
+    $$ = A_MemberExpr($1->pos, $1, $3->id);
 }
 ;
 
-ArrayExpr: ID LBRACKET IndexExpr RBRACKET
+ArrayExpr: LeftVal LBRACKET IndexExpr RBRACKET
 {
-    $$ = A_ArrayExpr($1->pos, $1->id, $3);
+    $$ = A_ArrayExpr($1->pos, $1, $3);
 }
 ;
 
